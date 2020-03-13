@@ -1,9 +1,13 @@
 package com.davydh.covid_19.activity;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -13,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.davydh.covid_19.R;
+import com.davydh.covid_19.fragment.MapFragment;
 import com.davydh.covid_19.model.Nation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.maps.android.data.geojson.GeoJsonLayer;
@@ -21,7 +26,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +34,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -37,17 +42,26 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private BottomNavigationView bottomNavigation;
     private List<Nation> nationsData = new ArrayList<>();
     private Nation lastNationData;
+    private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_main_layout);
+
+        context = getApplicationContext();
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
+
+        /*FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, new MapFragment());
+        fragmentTransaction.commit();*/
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        mapFragment.getView().setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -115,8 +129,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                         }
 
                         lastNationData = nationsData.get(nationsData.size() - 1);
-
-                        Log.i("PROVA", lastNationData.toString());
                     }
                 }, new Response.ErrorListener() {
 
@@ -129,5 +141,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add the request to the RequestQueue.
         queue.add(jsonArrayRequest);
+    }
+
+    public static Context getContext() {
+        return context;
     }
 }
