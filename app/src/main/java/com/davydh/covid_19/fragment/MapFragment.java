@@ -45,7 +45,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
                     .findFragmentById(R.id.map);
             if (mapFragment != null) {
-                Log.i("PROVA", "Ciao");
                 mapFragment.getMapAsync(this);
             }
         }
@@ -53,6 +52,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
         GeoJsonLayer layer = null;
         try {
             layer = new GeoJsonLayer(mMap, R.raw.italy,

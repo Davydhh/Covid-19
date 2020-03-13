@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/dashboard_item"
-        android:title="Dashboard"
-        android:icon="@drawable/ic_dashboard"/>
-
-    <item
         android:id="@+id/map_item"
         android:title="Mappa"
-        android:icon="@drawable/ic_map"/>
+        android:icon="@drawable/ic_map"
+        android:checked="true"/>
+
+    <item
+        android:id="@+id/dashboard_item"
+        android:title="Dashboard"
+        android:icon="@drawable/ic_dashboard"
+        android:checked="false"/>
 
     <item
         android:id="@+id/stats_item"
         android:title="Statistiche"
-        android:icon="@drawable/ic_show_chart"/>
+        android:icon="@drawable/ic_show_chart"
+        android:checked="false"/>
 
 </menu>

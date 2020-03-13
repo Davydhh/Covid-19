@@ -1,5 +1,7 @@
 package com.davydh.covid_19.activity;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -7,7 +9,9 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -17,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.davydh.covid_19.R;
+import com.davydh.covid_19.fragment.DashboardFragment;
 import com.davydh.covid_19.fragment.MapFragment;
 import com.davydh.covid_19.model.Nation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -40,9 +45,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private BottomNavigationView bottomNavigation;
-    private List<Nation> nationsData = new ArrayList<>();
-    private Nation lastNationData;
+    private static List<Nation> nationsData = new ArrayList<>();
+    private static Nation lastNationData;
     private static Context context;
+    private FragmentManager fragmentManager;
+    private SupportMapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +58,34 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         context = getApplicationContext();
 
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
-        /*FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, new MapFragment());
-        fragmentTransaction.commit();*/
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                FragmentTransaction ft = fragmentManager.beginTransaction();
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        mapFragment.getView().setVisibility(View.INVISIBLE);
+                if (item.isChecked()) {
+                    return false;
+                }
+
+                switch (item.getItemId()) {
+                    case R.id.dashboard_item:
+                        ft.replace(R.id.fragment_container, new DashboardFragment()).commit();
+                        return true;
+                    case R.id.map_item:
+                        ft.replace(R.id.fragment_container, new MapFragment()).commit();
+                        return true;
+                    case R.id.stats_item:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
     }
 
     @Override
@@ -97,7 +121,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Request a string response from the provided URL.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                (Request.Method.GET, regionsUrl, null, new Response.Listener<JSONArray>() {
+                (Request.Method.GET, nationUrl, null, new Response.Listener<JSONArray>() {
 
                     @Override
                     public void onResponse(JSONArray response) {
@@ -130,6 +154,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
                         lastNationData = nationsData.get(nationsData.size() - 1);
                     }
+
                 }, new Response.ErrorListener() {
 
                     @Override

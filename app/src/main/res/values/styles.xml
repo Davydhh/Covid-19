@@ -5,5 +5,16 @@
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    
+    <style name="TextViewStyleBold" parent="android:Widget.TextView">
+        <item name="android:textColor">#000000</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">23dp</item>
+    </style>
+
+    <style name="TextViewStyleNormal" parent="android:Widget.TextView">
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">19dp</item>
+    </style>
 
 </resources>
