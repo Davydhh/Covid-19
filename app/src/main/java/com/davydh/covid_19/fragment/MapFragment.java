@@ -43,7 +43,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -274,11 +276,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             }
         }
 
-        hashMapAdapter = new HashMapAdapter(provinceInfo);
+        LinkedHashMap<String,Integer> sortedMap = new LinkedHashMap<>();
+        provinceInfo.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
+        hashMapAdapter = new HashMapAdapter(sortedMap);
         provincesListView.setAdapter(hashMapAdapter);
     }
-
-
-
 
 }
