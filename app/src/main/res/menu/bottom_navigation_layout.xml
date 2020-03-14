@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/map_item"
-        android:title="Mappa"
-        android:icon="@drawable/ic_map"
-        android:checked="true"/>
-
-    <item
         android:id="@+id/dashboard_item"
         android:title="Dashboard"
         android:icon="@drawable/ic_dashboard"
+        android:checked="true"/>
+
+    <item
+        android:id="@+id/map_item"
+        android:title="Mappa"
+        android:icon="@drawable/ic_map"
         android:checked="false"/>
 
     <item

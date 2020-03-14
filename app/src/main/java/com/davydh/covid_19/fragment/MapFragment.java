@@ -14,6 +14,7 @@ import com.davydh.covid_19.R;
 import com.davydh.covid_19.activity.MainActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -24,6 +25,8 @@ import org.json.JSONException;
 import java.io.IOException;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
+
+    private MapView mapView;
     private GoogleMap mMap;
 
     public MapFragment() {
@@ -33,21 +36,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_map,container,false);
-    }
+        View rootview =  inflater.inflate(R.layout.fragment_map,container,false);
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        mapView = rootview.findViewById(R.id.mapview);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        if (getActivity() != null) {
-            SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
-                    .findFragmentById(R.id.map);
-            if (mapFragment != null) {
-                mapFragment.getMapAsync(this);
-            }
-        }
+        return rootview;
     }
 
     @Override
@@ -70,5 +65,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(rome));
         mMap.animateCamera( CameraUpdateFactory.zoomTo( 5.5f ) );
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 }

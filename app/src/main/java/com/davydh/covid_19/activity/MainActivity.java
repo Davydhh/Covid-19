@@ -41,15 +41,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MainActivity extends FragmentActivity  {
 
-    private GoogleMap mMap;
     private BottomNavigationView bottomNavigation;
     private static List<Nation> nationsData = new ArrayList<>();
     private static Nation lastNationData;
     private static Context context;
     private FragmentManager fragmentManager;
-    private SupportMapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +58,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, new DashboardFragment());
+        fragmentTransaction.commit();
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
@@ -86,30 +86,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        GeoJsonLayer layer = null;
-        try {
-            layer = new GeoJsonLayer(mMap, R.raw.italy,
-                    getApplicationContext());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        layer.addLayerToMap();
-
-        LatLng rome= new LatLng(41.9109,12.4818);
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(rome));
-        mMap.animateCamera( CameraUpdateFactory.zoomTo( 5.5f ) );
-
-        getDataFromServer();
     }
 
     private void getDataFromServer() {
