@@ -40,7 +40,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private static final String TAG = MapFragment.class.getSimpleName();
@@ -52,6 +54,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     private List<Province> provincesData = new ArrayList<>();
     private List<Province> lastProvincesData = new ArrayList<>();
+    private Map<String, Integer> provinceInfo = new HashMap<>();
 
     public MapFragment() {
         // Required empty public constructor
@@ -90,6 +93,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         }
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.9109,12.4818), 5.5f));
+
+        getProvinceDataFromServer();
     }
 
     @Override
@@ -217,7 +222,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                         }
 
                         lastProvincesData = provincesData.subList(provincesData.size()-107, provincesData.size());
-
                     }
 
                 }, new Response.ErrorListener() {
@@ -237,15 +241,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         for (int i = 0; i < lastRegionData.size(); i++) {
             Region region = lastRegionData.get(i);
             LatLng position = new LatLng(region.getLatitude(), region.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(position).title(region.getNome()).snippet("Contagiati: " + region.getAttualmentePositivi()));
+            Marker marker = mMap.addMarker(new MarkerOptions().position(position).title(region.getNome()).snippet("Contagiati: " + region.getAttualmentePositivi()));
+            marker.setTag(region.getNome());
         }
     }
 
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        getProvinceDataFromServer();
         MainActivity.setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
+        fillProvinceInfo((String) marker.getTag());
+        Log.i("PROVA", provinceInfo.toString());
+    }
+
+    private void fillProvinceInfo(String regionName) {
+        provinceInfo.clear();
+        for (int i = 0; i < lastProvincesData.size(); i++) {
+            Province province = lastProvincesData.get(i);
+            if (province.getNomeRegione().equalsIgnoreCase(regionName)) {
+                provinceInfo.put(province.getNomeProvincia(), province.getTotaleCasi());
+            }
+        }
     }
 
 
