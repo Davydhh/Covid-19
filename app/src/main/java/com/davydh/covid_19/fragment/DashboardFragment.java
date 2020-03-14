@@ -2,9 +2,11 @@ package com.davydh.covid_19.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.davydh.covid_19.R;
 import com.davydh.covid_19.activity.MainActivity;
+import com.davydh.covid_19.adapter.HashMapAdapter;
 import com.davydh.covid_19.model.Nation;
 
 import org.json.JSONArray;
@@ -27,15 +30,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DashboardFragment extends Fragment {
 
     private TextView infectedText;
     private TextView recoveredText;
     private TextView deadText;
-    private static List<Nation> nationsData = new ArrayList<>();
-    private static Nation lastNationData;
+    private ListView nationListView;
+    private List<Nation> nationsData = new ArrayList<>();
+    private Nation lastNationData;
+    private Map<String, Integer> nationInfo = new HashMap<>();
+    HashMapAdapter hashMapAdapter;
 
     public DashboardFragment() {
     }
@@ -53,6 +61,7 @@ public class DashboardFragment extends Fragment {
         infectedText = getActivity().findViewById(R.id.infected_text);
         recoveredText = getActivity().findViewById(R.id.recovered_text);
         deadText = getActivity().findViewById(R.id.dead_text);
+        nationListView = getActivity().findViewById(R.id.nation_info_list);
 
         getNationDataFromServer();
     }
@@ -98,6 +107,9 @@ public class DashboardFragment extends Fragment {
                         lastNationData = nationsData.get(nationsData.size() - 1);
 
                         setText();
+
+                        fillNationInfo();
+
                     }
 
                 }, new Response.ErrorListener() {
@@ -117,5 +129,18 @@ public class DashboardFragment extends Fragment {
         infectedText.setText(lastNationData.getAttualmentePositivi()+"");
         recoveredText.setText(lastNationData.getDimessi()+"");
         deadText.setText(lastNationData.getDeceduti()+"");
+    }
+
+    private void fillNationInfo() {
+        nationInfo.put("Totale casi:",lastNationData.getTotaleCasi());
+        nationInfo.put("Nuovi casi positivi:",lastNationData.getNuoviPositivi());
+        nationInfo.put("Totale ospedalizzati:",lastNationData.getTotaleOspedalizzati());
+        nationInfo.put("Terapia intensiva:",lastNationData.getTerapiaIntensiva());
+        nationInfo.put("Ricoverati", lastNationData.getRicoveratiConSintomi());
+        nationInfo.put("Isolamento domiciliare",lastNationData.getIsolamentoDomiciliare());
+        nationInfo.put("Tamponi", lastNationData.getTamponi());
+
+        hashMapAdapter = new HashMapAdapter(nationInfo);
+        nationListView.setAdapter(hashMapAdapter);
     }
 }
