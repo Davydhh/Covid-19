@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.davydh.covid_19.R;
 import com.davydh.covid_19.activity.MainActivity;
+import com.davydh.covid_19.adapter.HashMapAdapter;
 import com.davydh.covid_19.model.Province;
 import com.davydh.covid_19.model.Region;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -40,6 +42,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +58,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private List<Province> provincesData = new ArrayList<>();
     private List<Province> lastProvincesData = new ArrayList<>();
     private Map<String, Integer> provinceInfo = new HashMap<>();
+
+    private ListView provincesListView;
+    private HashMapAdapter hashMapAdapter;
 
     public MapFragment() {
         // Required empty public constructor
@@ -95,6 +101,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.9109,12.4818), 5.5f));
 
         getProvinceDataFromServer();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        provincesListView = getActivity().findViewById(R.id.province_list_view);
     }
 
     @Override
@@ -246,10 +258,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         }
     }
 
-
     @Override
     public void onInfoWindowClick(Marker marker) {
-        MainActivity.setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
+        MainActivity.setBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED);
         fillProvinceInfo((String) marker.getTag());
         Log.i("PROVA", provinceInfo.toString());
     }
@@ -262,6 +273,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 provinceInfo.put(province.getNomeProvincia(), province.getTotaleCasi());
             }
         }
+
+        hashMapAdapter = new HashMapAdapter(provinceInfo);
+        provincesListView.setAdapter(hashMapAdapter);
     }
 
 
