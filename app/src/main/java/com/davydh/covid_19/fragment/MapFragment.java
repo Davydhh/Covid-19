@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.maps.android.data.geojson.GeoJsonLayer;
 
 import org.json.JSONArray;
@@ -244,5 +245,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     @Override
     public void onInfoWindowClick(Marker marker) {
         getProvinceDataFromServer();
+        MainActivity.setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
     }
+
+
+
+
 }

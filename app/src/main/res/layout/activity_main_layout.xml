@@ -24,6 +24,8 @@
         app:menu="@menu/bottom_navigation_layout">
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
+    <include layout="@layout/province_bottom_sheet"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 

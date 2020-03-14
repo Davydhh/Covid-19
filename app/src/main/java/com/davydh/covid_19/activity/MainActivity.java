@@ -12,30 +12,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.davydh.covid_19.R;
 import com.davydh.covid_19.fragment.DashboardFragment;
 import com.davydh.covid_19.fragment.MapFragment;
 import com.davydh.covid_19.model.Nation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.maps.android.data.geojson.GeoJsonLayer;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,10 +34,17 @@ public class MainActivity extends AppCompatActivity {
     private static Context context;
     private FragmentManager fragmentManager;
 
+    private static BottomSheetBehavior sheetBehavior;
+    private LinearLayout bottom_sheet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_layout);
+
+        bottom_sheet = findViewById(R.id.province_bottom_sheet);
+        sheetBehavior = BottomSheetBehavior.from(bottom_sheet);
+        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         context = getApplicationContext();
 
@@ -91,5 +82,18 @@ public class MainActivity extends AppCompatActivity {
 
     public static Context getContext() {
         return context;
+    }
+
+    public static void setBottomSheetState(int state) {
+        sheetBehavior.setState(state);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (sheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
+            sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
