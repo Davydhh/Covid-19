@@ -20,6 +20,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.davydh.covid_19.R;
 import com.davydh.covid_19.activity.MainActivity;
+import com.davydh.covid_19.model.Province;
 import com.davydh.covid_19.model.Region;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.data.geojson.GeoJsonLayer;
 
@@ -39,13 +41,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private static final String TAG = MapFragment.class.getSimpleName();
     private MapView mapView;
     private GoogleMap mMap;
 
     private List<Region> regionsData = new ArrayList<>();
     private List<Region> lastRegionData = new ArrayList<>();
+
+    private List<Province> provincesData = new ArrayList<>();
+    private List<Province> lastProvincesData = new ArrayList<>();
 
     public MapFragment() {
         // Required empty public constructor
@@ -67,6 +72,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setOnInfoWindowClickListener(this);
+
         getRegionDataFromServer();
 
         try {
@@ -80,18 +87,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         } catch (Resources.NotFoundException e) {
             Log.e(TAG, "Can't find style. Error: ", e);
         }
-
-       /* GeoJsonLayer layer = null;
-        try {
-            layer = new GeoJsonLayer(mMap, R.raw.italy2,
-                    MainActivity.getContext());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        layer.addLayerToMap();*/
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.9109,12.4818), 5.5f));
     }
@@ -182,13 +177,72 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         queue.add(jsonArrayRequest);
     }
 
+    private void getProvinceDataFromServer() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.getContext());
+        final String provinceUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-province.json";
+
+        // Request a string response from the provided URL.
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
+                (Request.Method.GET, provinceUrl, null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                JSONObject object = response.getJSONObject(i);
+                                String data = object.getString("data");
+                                String stato = object.getString("stato");
+                                int codiceRegionale = object.getInt("codice_regione");
+                                String nomeRegione = object.getString("denominazione_regione");
+                                int codiceProvincia = object.getInt("codice_provincia");
+                                String nomeProvincia = object.getString("denominazione_provincia");
+                                String siglaProvincia = object.getString("sigla_provincia");
+                                double latitude = object.getDouble("lat");
+                                double longitude = object.getDouble("long");
+                                int totaleCasi = object.getInt("totale_casi");
+
+                                if (!nomeProvincia.equals("In fase di definizione/aggiornamento")) {
+                                    Province province = new Province(data, stato, codiceRegionale, nomeRegione,
+                                            codiceProvincia, nomeProvincia, siglaProvincia, latitude, longitude,
+                                            totaleCasi);
+
+                                    provincesData.add(province);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        lastProvincesData = provincesData.subList(provincesData.size()-107, provincesData.size());
+
+                    }
+
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast toast = Toast.makeText(MainActivity.getContext(),"Impossibile scaricare i dati", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+
+        // Add the request to the RequestQueue.
+        queue.add(jsonArrayRequest);
+    }
+
     private void createMarkers() {
         for (int i = 0; i < lastRegionData.size(); i++) {
             Region region = lastRegionData.get(i);
             LatLng position = new LatLng(region.getLatitude(), region.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(position).title(region.getNome()).snippet(region.getAttualmentePositivi()+""));
+            mMap.addMarker(new MarkerOptions().position(position).title(region.getNome()).snippet("Contagiati: " + region.getAttualmentePositivi()));
         }
     }
 
 
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        getProvinceDataFromServer();
+    }
 }
