@@ -71,9 +71,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private ListView provincesListView;
     private HashMapAdapter hashMapAdapter;
 
-    public MapFragment() {
-        // Required empty public constructor
-    }
+    public MapFragment() {}
 
     @Nullable
     @Override
@@ -314,5 +312,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
+
+
 
 }

@@ -39,12 +39,11 @@ public class DashboardFragment extends Fragment {
     private TextView deadText;
     private TextView dataText;
     private ListView nationListView;
-    private List<Nation> nationsData = new ArrayList<>();
+    private static List<Nation> nationsData = new ArrayList<>();
     private Nation lastNationData;
     private Map<String, Integer> nationInfo = new HashMap<>();
 
-    public DashboardFragment() {
-    }
+    public DashboardFragment() {}
 
     @Nullable
     @Override
@@ -142,5 +141,9 @@ public class DashboardFragment extends Fragment {
 
         HashMapAdapter hashMapAdapter = new HashMapAdapter(nationInfo);
         nationListView.setAdapter(hashMapAdapter);
+    }
+
+    public static List<Nation> getNationsData() {
+        return nationsData;
     }
 }
