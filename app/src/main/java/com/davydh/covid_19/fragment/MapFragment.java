@@ -1,6 +1,10 @@
 package com.davydh.covid_19.fragment;
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
@@ -29,6 +34,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -257,6 +264,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             LatLng position = new LatLng(region.getLatitude(), region.getLongitude());
             Marker marker = mMap.addMarker(new MarkerOptions().position(position).title(region.getNome()).snippet("Contagiati: " + region.getAttualmentePositivi()));
             marker.setTag(region.getNome());
+
+            int recovered = region.getAttualmentePositivi();
+
+            if (recovered > 8000) {
+                //marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                marker.setIcon(bitmapDescriptorFromVector(MainActivity.getContext(), R.drawable.circle_red));
+            } else if (recovered > 4000) {
+                //marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                marker.setIcon(bitmapDescriptorFromVector(MainActivity.getContext(), R.drawable.circle_orange));
+            } else {
+                //marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                marker.setIcon(bitmapDescriptorFromVector(MainActivity.getContext(), R.drawable.circle_yellow));
+            }
+
         }
     }
 
@@ -283,6 +304,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
         hashMapAdapter = new HashMapAdapter(sortedMap);
         provincesListView.setAdapter(hashMapAdapter);
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
 }

@@ -10,12 +10,14 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.davydh.covid_19.R;
 import com.davydh.covid_19.fragment.DashboardFragment;
+import com.davydh.covid_19.fragment.InfoBottomSheetDialog;
 import com.davydh.covid_19.fragment.MapFragment;
 import com.davydh.covid_19.model.Nation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -78,6 +80,24 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.app_bar_layout, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.app_bar_item) {
+            InfoBottomSheetDialog infoBottomSheetDialog = new InfoBottomSheetDialog();
+            infoBottomSheetDialog.show(getSupportFragmentManager(),"InfoBottomSheetDialog");
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public static Context getContext() {

@@ -55,7 +55,7 @@ public class HashMapAdapter extends BaseAdapter {
         Map.Entry<String, Integer> item = getItem(position);
 
         viewHolder.contentText.setText(item.getKey());
-        viewHolder.infoText.setText(item.getValue()+"");
+        viewHolder.infoText.setText(Integer.toString(item.getValue()));
 
         return result;
     }

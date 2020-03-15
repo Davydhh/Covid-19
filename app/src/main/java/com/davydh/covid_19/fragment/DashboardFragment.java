@@ -1,8 +1,6 @@
 package com.davydh.covid_19.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,11 +37,11 @@ public class DashboardFragment extends Fragment {
     private TextView infectedText;
     private TextView recoveredText;
     private TextView deadText;
+    private TextView dataText;
     private ListView nationListView;
     private List<Nation> nationsData = new ArrayList<>();
     private Nation lastNationData;
     private Map<String, Integer> nationInfo = new HashMap<>();
-    HashMapAdapter hashMapAdapter;
 
     public DashboardFragment() {
     }
@@ -61,6 +59,7 @@ public class DashboardFragment extends Fragment {
         infectedText = getActivity().findViewById(R.id.infected_text);
         recoveredText = getActivity().findViewById(R.id.recovered_text);
         deadText = getActivity().findViewById(R.id.dead_text);
+        dataText = getActivity().findViewById(R.id.data_text);
         nationListView = getActivity().findViewById(R.id.nation_info_list);
 
         getNationDataFromServer();
@@ -126,9 +125,10 @@ public class DashboardFragment extends Fragment {
     }
 
     private void setText() {
-        infectedText.setText(lastNationData.getAttualmentePositivi()+"");
-        recoveredText.setText(lastNationData.getDimessi()+"");
-        deadText.setText(lastNationData.getDeceduti()+"");
+        infectedText.setText(Integer.toString(lastNationData.getAttualmentePositivi()));
+        recoveredText.setText(Integer.toString(lastNationData.getDimessi()));
+        deadText.setText(Integer.toString(lastNationData.getDeceduti()));
+        dataText.setText("Dati aggiornati al: " + lastNationData.getData());
     }
 
     private void fillNationInfo() {
@@ -140,7 +140,7 @@ public class DashboardFragment extends Fragment {
         nationInfo.put("Isolamento domiciliare",lastNationData.getIsolamentoDomiciliare());
         nationInfo.put("Tamponi", lastNationData.getTamponi());
 
-        hashMapAdapter = new HashMapAdapter(nationInfo);
+        HashMapAdapter hashMapAdapter = new HashMapAdapter(nationInfo);
         nationListView.setAdapter(hashMapAdapter);
     }
 }

@@ -11,8 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nuovi positivi:"
-        android:textSize="17dp"
-        android:layout_alignParentLeft="true"
+        android:textSize="15sp"
+        android:layout_alignParentStart="true"
         android:textColor="@color/black"/>
 
     <TextView
@@ -20,8 +20,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="2000"
-        android:textSize="17dp"
-        android:layout_alignParentRight="true"
+        android:textSize="15sp"
+        android:layout_alignParentEnd="true"
         android:textColor="@color/black"/>
 
 </RelativeLayout>

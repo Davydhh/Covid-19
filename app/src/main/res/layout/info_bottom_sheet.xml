@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dati forniti dal Ministero della Salute"
+        style="@style/TextViewStyleNormal"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Elaborazione e gestione dati a cura del Dipartimento della Protezione Civile"
+        style="@style/TextViewStyleNormal"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Categoria ISO 19115: Salute"
+        style="@style/TextViewStyleNormal"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Editore/Autore del dataset: Dipartimento della Protezione Civile"
+        style="@style/TextViewStyleNormal"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Licenza: CC-BY-4.0 (https://creativecommons.org/licenses/by/4.0/legalcode.it)"
+        style="@style/TextViewStyleNormal"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Repository dei dati: https://github.com/pcm-dpc/COVID-19"
+        style="@style/TextViewStyleNormal"
+        android:layout_marginTop="20dp"/>
+
+</LinearLayout>
