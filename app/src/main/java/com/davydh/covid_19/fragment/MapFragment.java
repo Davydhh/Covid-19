@@ -33,7 +33,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -41,15 +40,12 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.maps.android.data.geojson.GeoJsonLayer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -61,15 +57,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private MapView mapView;
     private GoogleMap mMap;
 
-    private List<Region> regionsData = new ArrayList<>();
-    private List<Region> lastRegionData = new ArrayList<>();
+    private List<Region> regionsData;
+    private List<Region> lastRegionData;
 
-    private List<Province> provincesData = new ArrayList<>();
-    private List<Province> lastProvincesData = new ArrayList<>();
+    private List<Province> provincesData;
+    private List<Province> lastProvincesData;
     private Map<String, Integer> provinceInfo = new HashMap<>();
 
     private ListView provincesListView;
-    private HashMapAdapter hashMapAdapter;
+
+    private RequestQueue queue;
+
+    private Context context;
 
     public MapFragment() {}
 
@@ -96,7 +95,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         try {
             boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
-                            MainActivity.getContext(), R.raw.style));
+                            context, R.raw.style));
 
             if (!success) {
                 Log.e(TAG, "Style parsing failed.");
@@ -114,6 +113,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         provincesListView = getActivity().findViewById(R.id.province_list_view);
+        context = getActivity().getApplicationContext();
+        queue = Volley.newRequestQueue(context);
     }
 
     @Override
@@ -141,61 +142,53 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     private void getRegionDataFromServer() {
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(MainActivity.getContext());
         String regionUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-regioni.json";
+
+        regionsData = new ArrayList<>();
+        lastRegionData = new ArrayList<>();
 
         // Request a string response from the provided URL.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                (Request.Method.GET, regionUrl, null, new Response.Listener<JSONArray>() {
+                (Request.Method.GET, regionUrl, null, response -> {
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject object = response.getJSONObject(i);
+                            String data = object.getString("data");
+                            String stato = object.getString("stato");
+                            int codiceRegionale = object.getInt("codice_regione");
+                            String nome = object.getString("denominazione_regione");
+                            double latitude = object.getDouble("lat");
+                            double longitude = object.getDouble("long");
+                            int ricoveratiConSintomi = object.getInt("ricoverati_con_sintomi");
+                            int terapiaIntensiva = object.getInt("terapia_intensiva");
+                            int totaleOspedalizzati = object.getInt("totale_ospedalizzati");
+                            int isolamentoDomiciliare = object.getInt("isolamento_domiciliare");
+                            int attualmentePositivi = object.getInt("totale_attualmente_positivi");
+                            int nuoviPositivi = object.getInt("nuovi_attualmente_positivi");
+                            int dimessi = object.getInt("dimessi_guariti");
+                            int deceduti = object.getInt("deceduti");
+                            int totaleCasi = object.getInt("totale_casi");
+                            int tamponi = object.getInt("tamponi");
 
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-                                JSONObject object = response.getJSONObject(i);
-                                String data = object.getString("data");
-                                String stato = object.getString("stato");
-                                int codiceRegionale = object.getInt("codice_regione");
-                                String nome = object.getString("denominazione_regione");
-                                double latitude = object.getDouble("lat");
-                                double longitude = object.getDouble("long");
-                                int ricoveratiConSintomi = object.getInt("ricoverati_con_sintomi");
-                                int terapiaIntensiva = object.getInt("terapia_intensiva");
-                                int totaleOspedalizzati = object.getInt("totale_ospedalizzati");
-                                int isolamentoDomiciliare = object.getInt("isolamento_domiciliare");
-                                int attualmentePositivi = object.getInt("totale_attualmente_positivi");
-                                int nuoviPositivi = object.getInt("nuovi_attualmente_positivi");
-                                int dimessi = object.getInt("dimessi_guariti");
-                                int deceduti = object.getInt("deceduti");
-                                int totaleCasi = object.getInt("totale_casi");
-                                int tamponi = object.getInt("tamponi");
+                            Region region = new Region(data,stato,codiceRegionale,nome,latitude,
+                                    longitude,ricoveratiConSintomi,terapiaIntensiva,totaleOspedalizzati,
+                                    isolamentoDomiciliare,attualmentePositivi,nuoviPositivi,dimessi,
+                                    deceduti,totaleCasi,tamponi);
 
-                                Region region = new Region(data,stato,codiceRegionale,nome,latitude,
-                                        longitude,ricoveratiConSintomi,terapiaIntensiva,totaleOspedalizzati,
-                                        isolamentoDomiciliare,attualmentePositivi,nuoviPositivi,dimessi,
-                                        deceduti,totaleCasi,tamponi);
+                            regionsData.add(region);
 
-                                regionsData.add(region);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-
-                        lastRegionData = regionsData.subList(regionsData.size()-20,regionsData.size());
-
-                        createMarkers();
-
                     }
 
-                }, new Response.ErrorListener() {
+                    lastRegionData = regionsData.subList(regionsData.size()-20,regionsData.size());
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast toast = Toast.makeText(MainActivity.getContext(),"Impossibile scaricare i dati", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
+                    createMarkers();
+
+                }, error -> {
+                    Toast toast = Toast.makeText(context,"Impossibile scaricare i dati", Toast.LENGTH_SHORT);
+                    toast.show();
                 });
 
         // Add the request to the RequestQueue.
@@ -203,53 +196,45 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     private void getProvinceDataFromServer() {
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(MainActivity.getContext());
         final String provinceUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-province.json";
+
+        provincesData = new ArrayList<>();
+        lastProvincesData = new ArrayList<>();
 
         // Request a string response from the provided URL.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                (Request.Method.GET, provinceUrl, null, new Response.Listener<JSONArray>() {
+                (Request.Method.GET, provinceUrl, null, response -> {
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject object = response.getJSONObject(i);
+                            String data = object.getString("data");
+                            String stato = object.getString("stato");
+                            int codiceRegionale = object.getInt("codice_regione");
+                            String nomeRegione = object.getString("denominazione_regione");
+                            int codiceProvincia = object.getInt("codice_provincia");
+                            String nomeProvincia = object.getString("denominazione_provincia");
+                            String siglaProvincia = object.getString("sigla_provincia");
+                            double latitude = object.getDouble("lat");
+                            double longitude = object.getDouble("long");
+                            int totaleCasi = object.getInt("totale_casi");
 
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-                                JSONObject object = response.getJSONObject(i);
-                                String data = object.getString("data");
-                                String stato = object.getString("stato");
-                                int codiceRegionale = object.getInt("codice_regione");
-                                String nomeRegione = object.getString("denominazione_regione");
-                                int codiceProvincia = object.getInt("codice_provincia");
-                                String nomeProvincia = object.getString("denominazione_provincia");
-                                String siglaProvincia = object.getString("sigla_provincia");
-                                double latitude = object.getDouble("lat");
-                                double longitude = object.getDouble("long");
-                                int totaleCasi = object.getInt("totale_casi");
+                            if (!nomeProvincia.equals("In fase di definizione/aggiornamento")) {
+                                Province province = new Province(data, stato, codiceRegionale, nomeRegione,
+                                        codiceProvincia, nomeProvincia, siglaProvincia, latitude, longitude,
+                                        totaleCasi);
 
-                                if (!nomeProvincia.equals("In fase di definizione/aggiornamento")) {
-                                    Province province = new Province(data, stato, codiceRegionale, nomeRegione,
-                                            codiceProvincia, nomeProvincia, siglaProvincia, latitude, longitude,
-                                            totaleCasi);
-
-                                    provincesData.add(province);
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                provincesData.add(province);
                             }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-
-                        lastProvincesData = provincesData.subList(provincesData.size()-107, provincesData.size());
                     }
 
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast toast = Toast.makeText(MainActivity.getContext(),"Impossibile scaricare i dati", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
+                    lastProvincesData = provincesData.subList(provincesData.size()-107, provincesData.size());
+                }, error -> {
+                    Toast toast = Toast.makeText(context,"Impossibile scaricare i dati", Toast.LENGTH_SHORT);
+                    toast.show();
                 });
 
         // Add the request to the RequestQueue.
@@ -266,14 +251,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             int recovered = region.getAttualmentePositivi();
 
             if (recovered > 8000) {
-                //marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                marker.setIcon(bitmapDescriptorFromVector(MainActivity.getContext(), R.drawable.circle_red));
+                marker.setIcon(bitmapDescriptorFromVector(context, R.drawable.circle_red));
             } else if (recovered > 4000) {
-                //marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-                marker.setIcon(bitmapDescriptorFromVector(MainActivity.getContext(), R.drawable.circle_orange));
+                marker.setIcon(bitmapDescriptorFromVector(context, R.drawable.circle_orange));
             } else {
-                //marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-                marker.setIcon(bitmapDescriptorFromVector(MainActivity.getContext(), R.drawable.circle_yellow));
+                marker.setIcon(bitmapDescriptorFromVector(context, R.drawable.circle_yellow));
             }
 
         }
@@ -283,7 +265,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public void onInfoWindowClick(Marker marker) {
         MainActivity.setBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED);
         fillProvinceInfo((String) marker.getTag());
-        Log.i("PROVA", provinceInfo.toString());
     }
 
     private void fillProvinceInfo(String regionName) {
@@ -300,7 +281,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 .stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
-        hashMapAdapter = new HashMapAdapter(sortedMap);
+        HashMapAdapter hashMapAdapter = new HashMapAdapter(sortedMap);
         provincesListView.setAdapter(hashMapAdapter);
     }
 

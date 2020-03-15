@@ -1,5 +1,6 @@
 package com.davydh.covid_19.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,9 +40,9 @@ public class DashboardFragment extends Fragment {
     private TextView deadText;
     private TextView dataText;
     private ListView nationListView;
-    private static List<Nation> nationsData = new ArrayList<>();
+    private static List<Nation> nationsData;
     private Nation lastNationData;
-    private Map<String, Integer> nationInfo = new HashMap<>();
+    private Context context;
 
     public DashboardFragment() {}
 
@@ -61,62 +62,57 @@ public class DashboardFragment extends Fragment {
         dataText = getActivity().findViewById(R.id.data_text);
         nationListView = getActivity().findViewById(R.id.nation_info_list);
 
+        context = getActivity().getApplicationContext();
+
         getNationDataFromServer();
     }
 
     private void getNationDataFromServer() {
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(MainActivity.getContext());
+        RequestQueue queue = Volley.newRequestQueue(context);
         String nationUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json";
+
+        nationsData = new ArrayList<>();
 
         // Request a string response from the provided URL.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                (Request.Method.GET, nationUrl, null, new Response.Listener<JSONArray>() {
+                (Request.Method.GET, nationUrl, null, response -> {
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject object = response.getJSONObject(i);
+                            String data = object.getString("data");
+                            String stato = object.getString("stato");
+                            int ricoveratiConSintomi = object.getInt("ricoverati_con_sintomi");
+                            int terapiaIntensiva = object.getInt("terapia_intensiva");
+                            int totaleOspedalizzati = object.getInt("totale_ospedalizzati");
+                            int isolamentoDomiciliare = object.getInt("isolamento_domiciliare");
+                            int attualmentePositivi = object.getInt("totale_attualmente_positivi");
+                            int nuoviPositivi = object.getInt("nuovi_attualmente_positivi");
+                            int dimessi = object.getInt("dimessi_guariti");
+                            int deceduti = object.getInt("deceduti");
+                            int totaleCasi = object.getInt("totale_casi");
+                            int tamponi = object.getInt("tamponi");
 
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-                                JSONObject object = response.getJSONObject(i);
-                                String data = object.getString("data");
-                                String stato = object.getString("stato");
-                                int ricoveratiConSintomi = object.getInt("ricoverati_con_sintomi");
-                                int terapiaIntensiva = object.getInt("terapia_intensiva");
-                                int totaleOspedalizzati = object.getInt("totale_ospedalizzati");
-                                int isolamentoDomiciliare = object.getInt("isolamento_domiciliare");
-                                int attualmentePositivi = object.getInt("totale_attualmente_positivi");
-                                int nuoviPositivi = object.getInt("nuovi_attualmente_positivi");
-                                int dimessi = object.getInt("dimessi_guariti");
-                                int deceduti = object.getInt("deceduti");
-                                int totaleCasi = object.getInt("totale_casi");
-                                int tamponi = object.getInt("tamponi");
+                            Nation nation = new Nation(data,stato,ricoveratiConSintomi,terapiaIntensiva,
+                                    totaleOspedalizzati,isolamentoDomiciliare,attualmentePositivi,
+                                    nuoviPositivi,dimessi,deceduti,totaleCasi,tamponi);
 
-                                Nation nation = new Nation(data,stato,ricoveratiConSintomi,terapiaIntensiva,
-                                        totaleOspedalizzati,isolamentoDomiciliare,attualmentePositivi,
-                                        nuoviPositivi,dimessi,deceduti,totaleCasi,tamponi);
+                            nationsData.add(nation);
 
-                                nationsData.add(nation);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-
-                        lastNationData = nationsData.get(nationsData.size() - 1);
-
-                        setText();
-
-                        fillNationInfo();
-
                     }
 
-                }, new Response.ErrorListener() {
+                    lastNationData = nationsData.get(nationsData.size() - 1);
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast toast = Toast.makeText(MainActivity.getContext(),"Impossibile scaricare i dati", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
+                    setText();
+
+                    fillNationInfo();
+
+                }, error -> {
+                    Toast toast = Toast.makeText(context,"Impossibile scaricare i dati", Toast.LENGTH_SHORT);
+                    toast.show();
                 });
 
         // Add the request to the RequestQueue.
@@ -131,6 +127,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void fillNationInfo() {
+        Map<String, Integer> nationInfo = new HashMap<>();
         nationInfo.put("Totale casi:",lastNationData.getTotaleCasi());
         nationInfo.put("Nuovi casi positivi:",lastNationData.getNuoviPositivi());
         nationInfo.put("Totale ospedalizzati:",lastNationData.getTotaleOspedalizzati());

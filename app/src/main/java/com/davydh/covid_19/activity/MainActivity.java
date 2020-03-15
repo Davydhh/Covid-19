@@ -23,7 +23,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigation;
-    private static Context context;
+    private Context context;
     private FragmentManager fragmentManager;
 
     private static BottomSheetBehavior sheetBehavior;
@@ -46,28 +46,25 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                FragmentTransaction ft = fragmentManager.beginTransaction();
+        bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+            FragmentTransaction ft = fragmentManager.beginTransaction();
 
-                if (item.isChecked()) {
+            if (item.isChecked()) {
+                return false;
+            }
+
+            switch (item.getItemId()) {
+                case R.id.dashboard_item:
+                    ft.replace(R.id.fragment_container, new DashboardFragment()).commit();
+                    return true;
+                case R.id.map_item:
+                    ft.replace(R.id.fragment_container, new MapFragment()).commit();
+                    return true;
+                case R.id.stats_item:
+                    ft.replace(R.id.fragment_container, new StatsFragment()).commit();
+                    return true;
+                default:
                     return false;
-                }
-
-                switch (item.getItemId()) {
-                    case R.id.dashboard_item:
-                        ft.replace(R.id.fragment_container, new DashboardFragment()).commit();
-                        return true;
-                    case R.id.map_item:
-                        ft.replace(R.id.fragment_container, new MapFragment()).commit();
-                        return true;
-                    case R.id.stats_item:
-                        ft.replace(R.id.fragment_container, new StatsFragment()).commit();
-                        return true;
-                    default:
-                        return false;
-                }
             }
         });
     }
@@ -88,10 +85,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public static Context getContext() {
-        return context;
     }
 
     public static void setBottomSheetState(int state) {
