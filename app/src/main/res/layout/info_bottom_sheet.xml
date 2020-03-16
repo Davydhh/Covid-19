@@ -46,4 +46,11 @@
         style="@style/TextViewStyleNormal"
         android:layout_marginTop="20dp"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Immagine dell'icona fornita da Bob Goldstein"
+        style="@style/TextViewStyleNormal"
+        android:layout_marginTop="20dp"/>
+
 </LinearLayout>

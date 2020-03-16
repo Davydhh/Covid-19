@@ -69,7 +69,6 @@ public class DashboardFragment extends Fragment {
     }
 
     private void getNationDataFromServer() {
-        Log.i("PROVA", "Download dati nazione");
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
         String nationUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json";
