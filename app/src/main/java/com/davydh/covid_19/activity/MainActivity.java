@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
         context = getApplicationContext();
 
-
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, new DashboardFragment());
