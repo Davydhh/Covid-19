@@ -24,10 +24,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String DASHBOARD_KEY = "Dashboard_Prefs";
-    public static final String MAP_KEY = "Map_Prefs";
-    public static final String PREFS = "FirstStart";
-
     private BottomNavigationView bottomNavigation;
     private Context context;
     private FragmentManager fragmentManager;
@@ -45,12 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
         context = getApplicationContext();
 
-        DashboardFragment dashboardFragment = new DashboardFragment();
-        MapFragment mapFragment = new MapFragment();
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, dashboardFragment);
+        fragmentTransaction.add(R.id.fragment_container, new DashboardFragment());
         fragmentTransaction.commit();
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
@@ -64,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.dashboard_item:
-                    ft.replace(R.id.fragment_container, dashboardFragment).commit();
+                    ft.replace(R.id.fragment_container, new DashboardFragment()).commit();
                     return true;
                 case R.id.map_item:
-                    ft.replace(R.id.fragment_container, mapFragment).commit();
+                    ft.replace(R.id.fragment_container, new MapFragment()).commit();
                     return true;
                 case R.id.stats_item:
                     ft.replace(R.id.fragment_container, new StatsFragment()).commit();

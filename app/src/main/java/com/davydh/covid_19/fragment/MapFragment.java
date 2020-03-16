@@ -90,14 +90,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         mMap.setOnInfoWindowClickListener(this);
 
-        SharedPreferences preferences = getActivity().getSharedPreferences(MainActivity.PREFS,Context.MODE_PRIVATE);
-        Boolean firstStart = preferences.getBoolean(MainActivity.MAP_KEY,true);
-
-        if (firstStart == true) {
-            getRegionDataFromServer();
-            getProvinceDataFromServer();
-            preferences.edit().putBoolean(MainActivity.MAP_KEY,false);
-        }
+        getRegionDataFromServer();
+        getProvinceDataFromServer();
 
         try {
             boolean success = googleMap.setMapStyle(
