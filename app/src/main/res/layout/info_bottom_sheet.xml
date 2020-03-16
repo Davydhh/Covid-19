@@ -49,7 +49,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Immagine dell'icona fornita da Bob Goldstein"
+        android:text="Immagine dell'icona di CDC/ Alissa Eckert, MS; Dan Higgins, MAM - This media comes from the Centers for Disease Control and Prevention's Public Health Image Library (PHIL), with identification number #23312.Note: Not all PHIL images are public domain; be sure to check copyright status and credit authors and content providers., Pubblico dominio, https://commons.wikimedia.org/w/index.php?curid=86444014"
         style="@style/TextViewStyleNormal"
         android:layout_marginTop="20dp"/>
 

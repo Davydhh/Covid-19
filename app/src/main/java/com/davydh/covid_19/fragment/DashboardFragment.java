@@ -129,10 +129,10 @@ public class DashboardFragment extends Fragment {
 
     private void fillNationInfo() {
         Map<String, Integer> nationInfo = new HashMap<>();
-        nationInfo.put("Totale casi:",lastNationData.getTotaleCasi());
-        nationInfo.put("Nuovi casi positivi:",lastNationData.getNuoviPositivi());
-        nationInfo.put("Totale ospedalizzati:",lastNationData.getTotaleOspedalizzati());
-        nationInfo.put("Terapia intensiva:",lastNationData.getTerapiaIntensiva());
+        nationInfo.put("Totale casi",lastNationData.getTotaleCasi());
+        nationInfo.put("Nuovi casi positivi",lastNationData.getNuoviPositivi());
+        nationInfo.put("Totale ospedalizzati",lastNationData.getTotaleOspedalizzati());
+        nationInfo.put("Terapia intensiva",lastNationData.getTerapiaIntensiva());
         nationInfo.put("Ricoverati", lastNationData.getRicoveratiConSintomi());
         nationInfo.put("Isolamento domiciliare",lastNationData.getIsolamentoDomiciliare());
         nationInfo.put("Tamponi", lastNationData.getTamponi());

@@ -267,9 +267,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
             int recovered = region.getAttualmentePositivi();
 
-            if (recovered > 8000) {
+            if (recovered > 10000) {
                 marker.setIcon(bitmapDescriptorFromVector(context, R.drawable.ic_coronavirus_red));
-            } else if (recovered > 4000) {
+            } else if (recovered > 5000) {
                 marker.setIcon(bitmapDescriptorFromVector(context, R.drawable.ic_coronavirus_orange));
             } else {
                 marker.setIcon(bitmapDescriptorFromVector(context, R.drawable.ic_coronavirus_yellow));
