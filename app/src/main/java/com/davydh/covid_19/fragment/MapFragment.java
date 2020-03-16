@@ -295,7 +295,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         }
 
         if (android.os.Build.VERSION.SDK_INT <= 23){
-            Map<String,Integer> sortedMap = sortByComparator(provinceInfo,true);
+            Map<String,Integer> sortedMap = sortByComparator(provinceInfo,false);
             HashMapAdapter hashMapAdapter = new HashMapAdapter(sortedMap);
             provincesListView.setAdapter(hashMapAdapter);
         } else{
