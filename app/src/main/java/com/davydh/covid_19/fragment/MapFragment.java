@@ -1,6 +1,7 @@
 package com.davydh.covid_19.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -90,7 +91,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         mMap.setOnInfoWindowClickListener(this);
 
-        getRegionDataFromServer();
+        SharedPreferences preferences = getActivity().getSharedPreferences(MainActivity.PREFS,Context.MODE_PRIVATE);
+        Boolean firstStart = preferences.getBoolean(MainActivity.MAP_KEY,true);
+
+        if (firstStart == true) {
+            getRegionDataFromServer();
+            getProvinceDataFromServer();
+            preferences.edit().putBoolean(MainActivity.MAP_KEY,false);
+        }
 
         try {
             boolean success = googleMap.setMapStyle(
@@ -105,8 +113,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         }
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.9109,12.4818), 5.5f));
-
-        getProvinceDataFromServer();
     }
 
     @Override

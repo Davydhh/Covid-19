@@ -50,18 +50,18 @@ public class DashboardFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dashboard_layout, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_dashboard_layout, container, false);
+        infectedText = rootView.findViewById(R.id.infected_text);
+        recoveredText = rootView.findViewById(R.id.recovered_text);
+        deadText = rootView.findViewById(R.id.dead_text);
+        dataText = rootView.findViewById(R.id.data_text);
+        nationListView = rootView.findViewById(R.id.nation_info_list);
+        return rootView;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        infectedText = getActivity().findViewById(R.id.infected_text);
-        recoveredText = getActivity().findViewById(R.id.recovered_text);
-        deadText = getActivity().findViewById(R.id.dead_text);
-        dataText = getActivity().findViewById(R.id.data_text);
-        nationListView = getActivity().findViewById(R.id.nation_info_list);
 
         context = getActivity().getApplicationContext();
 
