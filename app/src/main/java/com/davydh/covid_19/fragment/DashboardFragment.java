@@ -2,6 +2,7 @@ package com.davydh.covid_19.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void getNationDataFromServer() {
+        Log.i("PROVA", "Download dati nazione");
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
         String nationUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json";
