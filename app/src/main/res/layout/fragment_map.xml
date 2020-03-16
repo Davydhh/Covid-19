@@ -27,12 +27,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_coronavirus_red_small"/>
+                android:src="@drawable/ic_coronavirus_red"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="> 8000"
+                android:text=" > 8000"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
@@ -50,12 +50,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_coronavirus_orange_small"/>
+                android:src="@drawable/ic_coronavirus_orange"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="> 4000"
+                android:text=" > 4000"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
@@ -73,7 +73,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_coronavirus_yellow_small"/>
+                android:src="@drawable/ic_coronavirus_yellow"/>
 
             <TextView
                 android:layout_width="wrap_content"
