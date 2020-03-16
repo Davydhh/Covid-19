@@ -1,5 +1,6 @@
 package com.davydh.covid_19.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -9,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -21,8 +23,6 @@ import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.davydh.covid_19.R;
@@ -42,7 +42,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -115,10 +114,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.9109,12.4818), 5.5f));
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         provincesListView = getActivity().findViewById(R.id.province_list_view);
+
+        provincesListView.setOnTouchListener((v, event) -> {
+            int action = event.getAction();
+            switch (action) {
+                case MotionEvent.ACTION_DOWN:
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    break;
+
+                case MotionEvent.ACTION_UP:
+                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                    break;
+            }
+
+            v.onTouchEvent(event);
+            return true;
+        });
+
         context = getActivity().getApplicationContext();
         queue = Volley.newRequestQueue(context);
     }
@@ -271,7 +288,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        MainActivity.setBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+        MainActivity.setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
         fillProvinceInfo((String) marker.getTag());
     }
 
