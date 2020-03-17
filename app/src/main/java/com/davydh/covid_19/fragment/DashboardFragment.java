@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class DashboardFragment extends Fragment {
 
@@ -63,7 +64,7 @@ public class DashboardFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        context = getActivity().getApplicationContext();
+        context = Objects.requireNonNull(getActivity()).getApplicationContext();
 
         getNationDataFromServer();
     }

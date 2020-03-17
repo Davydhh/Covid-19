@@ -9,48 +9,55 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dati forniti dal Ministero della Salute"
-        style="@style/TextViewStyleNormal"/>
+        style="@style/TextViewStyleSmall"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Elaborazione e gestione dati a cura del Dipartimento della Protezione Civile"
-        style="@style/TextViewStyleNormal"
-        android:layout_marginTop="20dp"/>
+        style="@style/TextViewStyleSmall"
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Categoria ISO 19115: Salute"
-        style="@style/TextViewStyleNormal"
-        android:layout_marginTop="20dp"/>
+        style="@style/TextViewStyleSmall"
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Editore/Autore del dataset: Dipartimento della Protezione Civile"
-        style="@style/TextViewStyleNormal"
-        android:layout_marginTop="20dp"/>
+        style="@style/TextViewStyleSmall"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Materiale Concesso in Licenza rilasciato secondo la licenza CC-BY-4.0"
+        style="@style/TextViewStyleSmall"
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Licenza: CC-BY-4.0 (https://creativecommons.org/licenses/by/4.0/legalcode.it)"
-        style="@style/TextViewStyleNormal"
-        android:layout_marginTop="20dp"/>
+        style="@style/TextViewStyleSmall"
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Repository dei dati: https://github.com/pcm-dpc/COVID-19"
-        style="@style/TextViewStyleNormal"
-        android:layout_marginTop="20dp"/>
+        style="@style/TextViewStyleSmall"
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Immagine dell'icona di CDC/ Alissa Eckert, MS; Dan Higgins, MAM - This media comes from the Centers for Disease Control and Prevention's Public Health Image Library (PHIL), with identification number #23312.Note: Not all PHIL images are public domain; be sure to check copyright status and credit authors and content providers., Pubblico dominio, https://commons.wikimedia.org/w/index.php?curid=86444014"
-        style="@style/TextViewStyleNormal"
-        android:layout_marginTop="20dp"/>
+        style="@style/TextViewStyleSmall"
+        android:layout_marginTop="10dp"/>
 
 </LinearLayout>
