@@ -166,7 +166,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     private void getRegionDataFromServer() {
-        Log.i("PROVA", "Download dati regione");
         String regionUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-regioni.json";
 
         regionsData = new ArrayList<>();
@@ -223,7 +222,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     private void getProvinceDataFromServer() {
-        Log.i("PROVA", "Download dati province");
         final String provinceUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-province.json";
 
         provincesData = new ArrayList<>();
