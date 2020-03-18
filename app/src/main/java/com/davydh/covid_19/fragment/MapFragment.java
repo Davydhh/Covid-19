@@ -2,6 +2,7 @@ package com.davydh.covid_19.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -57,19 +58,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private static final String TAG = MapFragment.class.getSimpleName();
     private MapView mapView;
     private GoogleMap mMap;
-
     private List<Region> regionsData;
     private List<Region> lastRegionData;
-
     private List<Province> provincesData;
     private List<Province> lastProvincesData;
     private Map<String, Integer> provinceInfo = new HashMap<>();
-
     private ListView provincesListView;
-
     private RequestQueue queue;
-
     private Context context;
+    private SharedPreferences preferences;
 
     public MapFragment() {}
 
@@ -82,6 +79,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
+        preferences = MainActivity.preferences;
+
         return rootview;
     }
 
@@ -91,8 +90,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         mMap.setOnInfoWindowClickListener(this);
 
-        getRegionDataFromServer();
-        getProvinceDataFromServer();
+        if (!preferences.getBoolean(MainActivity.MAP_KEY,false)) {
+            getRegionDataFromServer();
+            getProvinceDataFromServer();
+        } else {
+            createMarkers();
+        }
 
         try {
             boolean success = googleMap.setMapStyle(
@@ -163,6 +166,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     private void getRegionDataFromServer() {
+        Log.i("PROVA", "Download dati regione");
         String regionUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-regioni.json";
 
         regionsData = new ArrayList<>();
@@ -207,6 +211,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
                     createMarkers();
 
+                    preferences.edit().putBoolean(MainActivity.MAP_KEY,true).apply();
+
                 }, error -> {
                     Toast toast = Toast.makeText(context,"Impossibile scaricare i dati", Toast.LENGTH_SHORT);
                     toast.show();
@@ -217,6 +223,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     private void getProvinceDataFromServer() {
+        Log.i("PROVA", "Download dati province");
         final String provinceUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-province.json";
 
         provincesData = new ArrayList<>();

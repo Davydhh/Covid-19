@@ -1,6 +1,7 @@
 package com.davydh.covid_19.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,6 +46,7 @@ public class DashboardFragment extends Fragment {
     private static List<Nation> nationsData;
     private Nation lastNationData;
     private Context context;
+    private SharedPreferences preferences;
 
     public DashboardFragment() {}
 
@@ -66,10 +68,18 @@ public class DashboardFragment extends Fragment {
 
         context = Objects.requireNonNull(getActivity()).getApplicationContext();
 
-        getNationDataFromServer();
+        preferences = getActivity().getSharedPreferences(MainActivity.PREFS_KEY,0);
+
+        if (!preferences.getBoolean(MainActivity.DASH_KEY, false)) {
+            getNationDataFromServer();
+        } else {
+            setText();
+            fillNationInfo();
+        }
     }
 
     private void getNationDataFromServer() {
+        Log.i("PROVA", "Download dati nazione");
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
         String nationUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json";
@@ -112,6 +122,7 @@ public class DashboardFragment extends Fragment {
 
                     fillNationInfo();
 
+                    preferences.edit().putBoolean(MainActivity.DASH_KEY,true).apply();
                 }, error -> {
                     Toast toast = Toast.makeText(context,"Impossibile scaricare i dati", Toast.LENGTH_SHORT);
                     toast.show();

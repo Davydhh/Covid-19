@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +23,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String PREFS_KEY = "Prefs";
+    public static final String DASH_KEY = "DashKey";
+    public static final String MAP_KEY = "MapKey";
+    public static SharedPreferences preferences;
+
     private BottomNavigationView bottomNavigation;
     private FragmentManager fragmentManager;
     private DashboardFragment dashboardFragment;
@@ -34,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_layout);
+
+        preferences = getSharedPreferences(PREFS_KEY,0);
+        preferences.edit().putBoolean(DASH_KEY,false).apply();
+        preferences.edit().putBoolean(MAP_KEY,false).apply();
 
         LinearLayout bottom_sheet = findViewById(R.id.province_bottom_sheet);
         sheetBehavior = BottomSheetBehavior.from(bottom_sheet);
