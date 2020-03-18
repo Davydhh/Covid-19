@@ -1,28 +1,32 @@
 package com.davydh.covid_19.activity;
 
-        import androidx.annotation.NonNull;
-        import androidx.appcompat.app.AppCompatActivity;
-        import androidx.fragment.app.FragmentManager;
-        import androidx.fragment.app.FragmentTransaction;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-        import android.os.Bundle;
-        import android.view.Menu;
-        import android.view.MenuItem;
-        import android.widget.LinearLayout;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.LinearLayout;
 
-        import com.davydh.covid_19.R;
-        import com.davydh.covid_19.fragment.DashboardFragment;
-        import com.davydh.covid_19.fragment.InfoBottomSheetDialog;
-        import com.davydh.covid_19.fragment.MapFragment;
-        import com.davydh.covid_19.fragment.StatsFragment;
-        import com.google.android.material.bottomnavigation.BottomNavigationView;
-        import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.davydh.covid_19.R;
+import com.davydh.covid_19.fragment.DashboardFragment;
+import com.davydh.covid_19.fragment.InfoBottomSheetDialog;
+import com.davydh.covid_19.fragment.MapFragment;
+import com.davydh.covid_19.fragment.StatsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigation;
     private FragmentManager fragmentManager;
+    private DashboardFragment dashboardFragment;
+    private MapFragment mapFragment;
+    private StatsFragment statsFragment;
 
     private static BottomSheetBehavior sheetBehavior;
 
@@ -35,9 +39,13 @@ public class MainActivity extends AppCompatActivity {
         sheetBehavior = BottomSheetBehavior.from(bottom_sheet);
         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
+        dashboardFragment = new DashboardFragment();
+        mapFragment = new MapFragment();
+        statsFragment = new StatsFragment();
+
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, new DashboardFragment());
+        fragmentTransaction.add(R.id.fragment_container, dashboardFragment);
         fragmentTransaction.commit();
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
@@ -51,13 +59,16 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.dashboard_item:
-                    ft.replace(R.id.fragment_container, new DashboardFragment()).commit();
+                    ft.replace(R.id.fragment_container, dashboardFragment).commit();
+                    if (sheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
+                        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                    }
                     return true;
                 case R.id.map_item:
-                    ft.replace(R.id.fragment_container, new MapFragment()).commit();
+                    ft.replace(R.id.fragment_container, mapFragment).commit();
                     return true;
                 case R.id.stats_item:
-                    ft.replace(R.id.fragment_container, new StatsFragment()).commit();
+                    ft.replace(R.id.fragment_container, statsFragment).commit();
                     if (sheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
                         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                     }
