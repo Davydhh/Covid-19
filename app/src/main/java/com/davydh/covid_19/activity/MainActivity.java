@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private DashboardFragment dashboardFragment;
     private MapFragment mapFragment;
-    private StatsFragment statsFragment;
 
     private static BottomSheetBehavior sheetBehavior;
 
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
         dashboardFragment = new DashboardFragment();
         mapFragment = new MapFragment();
-        statsFragment = new StatsFragment();
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -78,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                     ft.replace(R.id.fragment_container, mapFragment).commit();
                     return true;
                 case R.id.stats_item:
-                    ft.replace(R.id.fragment_container, statsFragment).commit();
+                    ft.replace(R.id.fragment_container, new StatsFragment()).commit();
                     if (sheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
                         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                     }
