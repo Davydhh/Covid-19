@@ -133,7 +133,11 @@ public class DashboardFragment extends Fragment {
         infectedText.setText(Integer.toString(lastNationData.getAttualmentePositivi()));
         recoveredText.setText(Integer.toString(lastNationData.getDimessi()));
         deadText.setText(Integer.toString(lastNationData.getDeceduti()));
-        dataText.setText("Dati aggiornati al: " + lastNationData.getData());
+        String date = lastNationData.getData();
+        String day = date.substring(8,10);
+        String month = date.substring(5,7);
+        String year = date.substring(0,4);
+        dataText.setText("Dati aggiornati al: " + day + '/' + month + '/' + year);
     }
 
     private void fillNationInfo() {
