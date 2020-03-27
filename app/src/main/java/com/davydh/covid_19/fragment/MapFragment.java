@@ -59,9 +59,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private MapView mapView;
     private GoogleMap mMap;
     private List<Region> regionsData;
-    private List<Region> lastRegionData;
     private List<Province> provincesData;
-    private List<Province> lastProvincesData;
     private Map<String, Integer> provinceInfo = new HashMap<>();
     private ListView provincesListView;
     private RequestQueue queue;
@@ -166,10 +164,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     private void getRegionDataFromServer() {
-        String regionUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-regioni.json";
+        Log.i("Download","Download last Region data");
+        String regionUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-regioni-latest.json";
 
         regionsData = new ArrayList<>();
-        lastRegionData = new ArrayList<>();
 
         // Request a string response from the provided URL.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
@@ -206,8 +204,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                         }
                     }
 
-                    lastRegionData = regionsData.subList(regionsData.size()-20,regionsData.size());
-
                     createMarkers();
 
                     preferences.edit().putBoolean(MainActivity.MAP_KEY,true).apply();
@@ -222,10 +218,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     private void getProvinceDataFromServer() {
-        final String provinceUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-province.json";
+        Log.i("Download","Download last Province data");
+        final String provinceUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-province-latest.json";
 
         provincesData = new ArrayList<>();
-        lastProvincesData = new ArrayList<>();
 
         // Request a string response from the provided URL.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
@@ -256,8 +252,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                             e.printStackTrace();
                         }
                     }
-
-                    lastProvincesData = provincesData.subList(provincesData.size()-107, provincesData.size());
                 }, error -> {
                     Toast toast = Toast.makeText(context,"Impossibile scaricare i dati", Toast.LENGTH_SHORT);
                     toast.show();
@@ -268,8 +262,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     private void createMarkers() {
-        for (int i = 0; i < lastRegionData.size(); i++) {
-            Region region = lastRegionData.get(i);
+        for (int i = 0; i < regionsData.size(); i++) {
+            Region region = regionsData.get(i);
             LatLng position = new LatLng(region.getLatitude(), region.getLongitude());
             Marker marker = mMap.addMarker(new MarkerOptions().position(position).title(region.getNome()).snippet("Contagiati: " + region.getAttualmentePositivi()));
             marker.setTag(region.getNome());
@@ -295,8 +289,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     private void fillProvinceInfo(String regionName) {
         provinceInfo.clear();
-        for (int i = 0; i < lastProvincesData.size(); i++) {
-            Province province = lastProvincesData.get(i);
+        for (int i = 0; i < provincesData.size(); i++) {
+            Province province = provincesData.get(i);
             if (province.getNomeRegione().equalsIgnoreCase(regionName)) {
                 provinceInfo.put(province.getNomeProvincia(), province.getTotaleCasi());
             }

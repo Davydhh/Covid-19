@@ -17,8 +17,6 @@ import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.davydh.covid_19.R;
@@ -26,7 +24,6 @@ import com.davydh.covid_19.activity.MainActivity;
 import com.davydh.covid_19.adapter.HashMapAdapter;
 import com.davydh.covid_19.model.Nation;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -79,6 +76,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void getNationDataFromServer() {
+        Log.i("Download","Download Nation data");
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
         String nationUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json";
