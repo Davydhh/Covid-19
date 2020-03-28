@@ -150,6 +150,14 @@ public class DashboardFragment extends Fragment {
         nationInfo.put("Isolamento domiciliare",lastNationData.getIsolamentoDomiciliare());
         nationInfo.put("Tamponi", lastNationData.getTamponi());
 
+        Nation previousNationData = nationsData.get(nationsData.size()-2);
+        int previousDeaths = previousNationData.getDeceduti();
+        int previousRecovered = previousNationData.getDimessi();
+
+        nationInfo.put("Totale nuovi casi positivi", lastNationData.getNuoviPositivi()
+                + (lastNationData.getDimessi() - previousRecovered)
+                + (lastNationData.getDeceduti() - previousDeaths));
+
         HashMapAdapter hashMapAdapter = new HashMapAdapter(nationInfo);
         nationListView.setAdapter(hashMapAdapter);
     }
