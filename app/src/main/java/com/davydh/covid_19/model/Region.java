@@ -17,11 +17,12 @@ public class Region {
     private int deceduti;
     private int totaleCasi;
     private int tamponi;
+    private String note;
 
     public Region(String data, String stato, int codice, String nome, double latitude, double longitude,
                   int ricoveratiConSintomi, int terapiaIntensiva, int totaleOspedalizzati,
                   int isolamentoDomiciliare, int attualmentePositivi, int nuoviPositivi, int dimessi,
-                  int deceduti, int totaleCasi, int tamponi) {
+                  int deceduti, int totaleCasi, int tamponi, String note) {
         this.data = data;
         this.stato = stato;
         this.codice = codice;
@@ -38,6 +39,7 @@ public class Region {
         this.deceduti = deceduti;
         this.totaleCasi = totaleCasi;
         this.tamponi = tamponi;
+        this.note = note;
     }
 
     public String getData() {
@@ -102,6 +104,10 @@ public class Region {
 
     public int getTamponi() {
         return tamponi;
+    }
+
+    public String getNote() {
+        return note;
     }
 
     @Override

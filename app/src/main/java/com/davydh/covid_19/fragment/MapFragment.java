@@ -191,11 +191,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                             int deceduti = object.getInt("deceduti");
                             int totaleCasi = object.getInt("totale_casi");
                             int tamponi = object.getInt("tamponi");
+                            String note = object.getString("note_it");
 
                             Region region = new Region(data,stato,codiceRegionale,nome,latitude,
                                     longitude,ricoveratiConSintomi,terapiaIntensiva,totaleOspedalizzati,
                                     isolamentoDomiciliare,attualmentePositivi,nuoviPositivi,dimessi,
-                                    deceduti,totaleCasi,tamponi);
+                                    deceduti,totaleCasi,tamponi,note);
 
                             regionsData.add(region);
 
@@ -267,6 +268,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             LatLng position = new LatLng(region.getLatitude(), region.getLongitude());
             Marker marker = mMap.addMarker(new MarkerOptions().position(position).title(region.getNome()).snippet("Contagiati: " + region.getAttualmentePositivi()));
             marker.setTag(region.getNome());
+
+            if (!region.getNote().isEmpty()) {
+                marker.setSnippet("Note: "+ region.getNote());
+            }
 
             int recovered = region.getAttualmentePositivi();
 
