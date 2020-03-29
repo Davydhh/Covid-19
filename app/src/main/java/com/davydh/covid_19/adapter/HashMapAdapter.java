@@ -58,7 +58,9 @@ public class HashMapAdapter extends BaseAdapter {
 
         Map.Entry<String, String> item = getItem(position);
 
-        viewHolder.contentText.setText(item.getKey());
+        String key = item.getKey();
+
+        viewHolder.contentText.setText(key);
 
         String value = item.getValue();
 
@@ -67,12 +69,22 @@ public class HashMapAdapter extends BaseAdapter {
         ForegroundColorSpan fcsRed = new ForegroundColorSpan(Color.RED);
         ForegroundColorSpan fcsGreen = new ForegroundColorSpan(Color.parseColor("#008000"));
 
-        if (value.contains("+")) {
-            int charPosition = value.indexOf("+");
-            str.setSpan(fcsRed,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        } else  if (value.contains("-")) {
-            int charPosition = value.indexOf("-");
-            str.setSpan(fcsGreen,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (key.contains("dimessi")) {
+            if (value.contains("+")) {
+                int charPosition = value.indexOf("+");
+                str.setSpan(fcsGreen,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } else {
+                int charPosition = value.indexOf("-");
+                str.setSpan(fcsRed,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        } else {
+            if (value.contains("+")) {
+                int charPosition = value.indexOf("+");
+                str.setSpan(fcsRed,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } else {
+                int charPosition = value.indexOf("-");
+                str.setSpan(fcsGreen,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
         }
 
         viewHolder.infoText.setText(str);

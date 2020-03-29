@@ -174,6 +174,8 @@ public class DashboardFragment extends Fragment {
                 + (previousRecovered - oldNationData.getDimessi()
                 + (previousDeaths - oldNationData.getDeceduti())));
         int varNuoviCasiPositivi = nuoviCasiPositivi - previousNationData.getNuoviPositivi();
+        int varDimessi = variazioneDimessi - (previousRecovered - oldNationData.getDimessi());
+        int varDeceduti = variazioneDeceduti - (previousDeaths - oldNationData.getDeceduti());
         int varOspedalizzati = ospedalizzati - previousNationData.getTotaleOspedalizzati();
         int varTerapiaIntensiva = terapiaIntensiva - previousNationData.getTerapiaIntensiva();
         int varRicoverati = ricoverati - previousNationData.getRicoveratiConSintomi();
@@ -198,8 +200,18 @@ public class DashboardFragment extends Fragment {
             nationInfo.put("Nuovi casi positivi", nuoviCasiPositivi + " (" + varNuoviCasiPositivi + ')');
         }
 
-        nationInfo.put("Nuovi dimessi",Integer.toString(variazioneDimessi));
-        nationInfo.put("Nuovi deceduti", Integer.toString(variazioneDeceduti));
+        if (varDimessi > 0) {
+            nationInfo.put("Nuovi dimessi", variazioneDimessi + " (+" + varDimessi + ')');
+        } else {
+            nationInfo.put("Nuovi dimessi", variazioneDimessi + " (" + varDimessi + ')');
+        }
+
+        if (varDeceduti > 0) {
+            nationInfo.put("Nuovi deceduti", variazioneDeceduti + " (+" + varDeceduti + ')');
+        } else {
+            nationInfo.put("Nuovi deceduti", variazioneDeceduti + " (" + varDeceduti + ')');
+        }
+
 
         if (varOspedalizzati > 0) {
             nationInfo.put("Totale ospedalizzati", ospedalizzati + " (+" + varOspedalizzati + ')');
