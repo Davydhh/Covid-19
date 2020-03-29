@@ -1,5 +1,9 @@
 package com.davydh.covid_19.adapter;
 
+import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +59,23 @@ public class HashMapAdapter extends BaseAdapter {
         Map.Entry<String, String> item = getItem(position);
 
         viewHolder.contentText.setText(item.getKey());
-        viewHolder.infoText.setText(item.getValue());
+
+        String value = item.getValue();
+
+        SpannableString str = new SpannableString(value);
+
+        ForegroundColorSpan fcsRed = new ForegroundColorSpan(Color.RED);
+        ForegroundColorSpan fcsGreen = new ForegroundColorSpan(Color.parseColor("#008000"));
+
+        if (value.contains("+")) {
+            int charPosition = value.indexOf("+");
+            str.setSpan(fcsRed,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } else  if (value.contains("-")) {
+            int charPosition = value.indexOf("-");
+            str.setSpan(fcsGreen,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        viewHolder.infoText.setText(str);
 
         return result;
     }
