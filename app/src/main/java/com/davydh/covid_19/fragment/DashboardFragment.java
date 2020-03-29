@@ -42,6 +42,7 @@ public class DashboardFragment extends Fragment {
     private TextView dataText;
     private ListView nationListView;
     private static List<Nation> nationsData;
+    private static List<Integer> totalNewPositiveData;
     private Nation lastNationData;
     private Context context;
     private SharedPreferences preferences;
@@ -73,6 +74,7 @@ public class DashboardFragment extends Fragment {
         } else {
             setText();
             fillNationInfo();
+            getTotalPositiveVariation();
         }
     }
 
@@ -119,6 +121,8 @@ public class DashboardFragment extends Fragment {
                     setText();
 
                     fillNationInfo();
+
+                    getTotalPositiveVariation();
 
                     preferences.edit().putBoolean(MainActivity.DASH_KEY,true).apply();
                 }, error -> {
@@ -231,7 +235,25 @@ public class DashboardFragment extends Fragment {
         nationListView.setAdapter(hashMapAdapter);
     }
 
+    private void getTotalPositiveVariation() {
+        totalNewPositiveData = new ArrayList<>();
+       for (int i = 0; i < nationsData.size(); i++) {
+           Nation nation = nationsData.get(i);
+           int date = nation.getNuoviPositivi();
+           if (i != 0) {
+               Nation previousNation = nationsData.get(i-1);
+               date += (nation.getDimessi() - previousNation.getDimessi())
+                       + (nation.getDeceduti() - previousNation.getDeceduti());
+           }
+           totalNewPositiveData.add(date);
+       }
+    }
+
     public static List<Nation> getNationsData() {
         return nationsData;
+    }
+
+    public static List<Integer> getTotalNewPositiveData() {
+        return totalNewPositiveData;
     }
 }

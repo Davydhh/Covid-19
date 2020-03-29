@@ -33,6 +33,7 @@ public class StatsFragment extends Fragment {
     private List<Entry> recoveredEntries = new ArrayList<>();
     private List<Entry> deadEntries = new ArrayList<>();
     private List<Entry> newInfectedEntries = new ArrayList<>();
+    private List<Entry> totalNewPositiveEntries = new ArrayList<>();
 
     public StatsFragment() {}
 
@@ -50,11 +51,12 @@ public class StatsFragment extends Fragment {
         newRecoveredLineChart = getActivity().findViewById(R.id.new_recovered_chart);
 
         List<Nation> nationsData = DashboardFragment.getNationsData();
+        List<Integer> totalNewPositiveData = DashboardFragment.getTotalNewPositiveData();
 
-        setChartData(nationsData);
+        setChartData(nationsData,totalNewPositiveData);
     }
 
-    private void setChartData(List<Nation> inputData) {
+    private void setChartData(List<Nation> inputData, List<Integer> inputDataNewRecovered) {
         float count = 0;
         for (Nation nation: inputData) {
             infectedEntries.add(new Entry(count,(float) nation.getAttualmentePositivi()));
@@ -64,16 +66,21 @@ public class StatsFragment extends Fragment {
             count++;
         }
 
+        for (int i = 0; i < inputDataNewRecovered.size(); i++) {
+            totalNewPositiveEntries.add(new Entry(i,(float) inputDataNewRecovered.get(i)));
+        }
+
         LineDataSet infectedDataSet = new LineDataSet(infectedEntries, "Attualmente positivi");
         LineDataSet recoveredDataSet = new LineDataSet(recoveredEntries, "Dimessi");
         LineDataSet deadDataSet = new LineDataSet(deadEntries, "Deceduti");
-
         LineDataSet newInfectedDataSet = new LineDataSet(newInfectedEntries, "Nuovi casi positivi");
-        newInfectedDataSet.setColor(Color.RED);
+        LineDataSet newTotalInfectedDataSet = new LineDataSet(totalNewPositiveEntries, "Totale nuovi casi positivi");
 
+        newInfectedDataSet.setColor(Color.RED);
         infectedDataSet.setColor(Color.RED);
         recoveredDataSet.setColor(Color.GREEN);
         deadDataSet.setColor(Color.BLACK);
+        newTotalInfectedDataSet.setColor(Color.BLUE);
 
         List<ILineDataSet> nationDataSets = new ArrayList<>();
         nationDataSets.add(infectedDataSet);
@@ -84,7 +91,10 @@ public class StatsFragment extends Fragment {
         setChartStyle(nationLineChart);
         nationLineChart.invalidate();
 
-        LineData newInfectedData = new LineData(newInfectedDataSet);
+        List<ILineDataSet> positiveDataSets = new ArrayList<>();
+        positiveDataSets.add(newInfectedDataSet);
+        positiveDataSets.add(newTotalInfectedDataSet);
+        LineData newInfectedData = new LineData(positiveDataSets);
         newRecoveredLineChart.setData(newInfectedData);
         setChartStyle(newRecoveredLineChart);
         newRecoveredLineChart.invalidate();
