@@ -11,10 +11,10 @@ import com.davydh.covid_19.R;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class HashMapAdapter extends BaseAdapter {
+public class IntHashMapAdapter extends BaseAdapter {
     private final ArrayList mData;
 
-    public HashMapAdapter(Map<String, String> map) {
+    public IntHashMapAdapter(Map<String, Integer> map) {
         mData = new ArrayList();
         mData.addAll(map.entrySet());
     }
@@ -25,7 +25,7 @@ public class HashMapAdapter extends BaseAdapter {
     }
 
     @Override
-    public Map.Entry<String, String> getItem(int position) {
+    public Map.Entry<String, Integer> getItem(int position) {
         return (Map.Entry) mData.get(position);
     }
 
@@ -52,10 +52,10 @@ public class HashMapAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) result.getTag();
         }
 
-        Map.Entry<String, String> item = getItem(position);
+        Map.Entry<String, Integer> item = getItem(position);
 
         viewHolder.contentText.setText(item.getKey());
-        viewHolder.infoText.setText(item.getValue());
+        viewHolder.infoText.setText(Integer.toString(item.getValue()));
 
         return result;
     }

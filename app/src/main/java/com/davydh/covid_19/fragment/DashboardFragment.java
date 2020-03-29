@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -141,22 +142,90 @@ public class DashboardFragment extends Fragment {
     }
 
     private void fillNationInfo() {
-        Map<String, Integer> nationInfo = new HashMap<>();
-        nationInfo.put("Totale casi",lastNationData.getTotaleCasi());
-        nationInfo.put("Nuovi casi positivi",lastNationData.getNuoviPositivi());
-        nationInfo.put("Totale ospedalizzati",lastNationData.getTotaleOspedalizzati());
-        nationInfo.put("Terapia intensiva",lastNationData.getTerapiaIntensiva());
-        nationInfo.put("Ricoverati", lastNationData.getRicoveratiConSintomi());
-        nationInfo.put("Isolamento domiciliare",lastNationData.getIsolamentoDomiciliare());
-        nationInfo.put("Tamponi", lastNationData.getTamponi());
+        Map<String, String> nationInfo = new LinkedHashMap<>();
+
+        int totaleCasi = lastNationData.getTotaleCasi();
+        int dimessi = lastNationData.getDimessi();
+        int deceduti = lastNationData.getDeceduti();
+        int nuoviCasiPositivi = lastNationData.getNuoviPositivi();
+        int ospedalizzati = lastNationData.getTotaleOspedalizzati();
+        int terapiaIntensiva = lastNationData.getTerapiaIntensiva();
+        int ricoverati = lastNationData.getRicoveratiConSintomi();
+        int isolamentoDomiciliare = lastNationData.getIsolamentoDomiciliare();
+        int tamponi = lastNationData.getTamponi();
 
         Nation previousNationData = nationsData.get(nationsData.size()-2);
         int previousDeaths = previousNationData.getDeceduti();
         int previousRecovered = previousNationData.getDimessi();
 
-        nationInfo.put("Totale nuovi casi positivi", lastNationData.getNuoviPositivi()
-                + (lastNationData.getDimessi() - previousRecovered)
-                + (lastNationData.getDeceduti() - previousDeaths));
+        int totaleNuoviCasiPositivi =  nuoviCasiPositivi + (dimessi - previousRecovered)
+                + (deceduti - previousDeaths);
+        int variazioneDeceduti = deceduti - previousDeaths;
+        int variazioneDimessi = dimessi - previousRecovered;
+
+        Nation oldNationData = nationsData.get(nationsData.size()-3);
+
+        int varTotaleCasi = totaleCasi - previousNationData.getTotaleCasi();
+        int varTotaleNuoviCasiPositivi = totaleNuoviCasiPositivi - (previousNationData.getNuoviPositivi()
+                + (previousRecovered - oldNationData.getDimessi()
+                + (previousDeaths - oldNationData.getDeceduti())));
+        int varNuoviCasiPositivi = nuoviCasiPositivi - previousNationData.getNuoviPositivi();
+        int varOspedalizzati = ospedalizzati - previousNationData.getTotaleOspedalizzati();
+        int varTerapiaIntensiva = terapiaIntensiva - previousNationData.getTerapiaIntensiva();
+        int varRicoverati = ricoverati - previousNationData.getRicoveratiConSintomi();
+        int varIsolamentoDom = isolamentoDomiciliare - previousNationData.getIsolamentoDomiciliare();
+        int varTamponi = tamponi - previousNationData.getTamponi();
+
+        if (varTotaleCasi > 0) {
+            nationInfo.put("Totale casi",totaleCasi + " (+" + varTotaleCasi + ')');
+        } else {
+            nationInfo.put("Totale casi",totaleCasi + " (" + varTotaleCasi + ')');
+        }
+
+        if (varTotaleNuoviCasiPositivi > 0) {
+            nationInfo.put("Totale nuovi casi positivi", totaleNuoviCasiPositivi + " (+" + varTotaleNuoviCasiPositivi + ')');
+        } else {
+            nationInfo.put("Totale nuovi casi positivi", totaleNuoviCasiPositivi + " (" + varTotaleNuoviCasiPositivi + ')');
+        }
+
+        if (varNuoviCasiPositivi > 0) {
+            nationInfo.put("Nuovi casi positivi", nuoviCasiPositivi + " (+" + varNuoviCasiPositivi + ')');
+        } else {
+            nationInfo.put("Nuovi casi positivi", nuoviCasiPositivi + " (" + varNuoviCasiPositivi + ')');
+        }
+
+        nationInfo.put("Nuovi dimessi",Integer.toString(variazioneDimessi));
+        nationInfo.put("Nuovi deceduti", Integer.toString(variazioneDeceduti));
+
+        if (varOspedalizzati > 0) {
+            nationInfo.put("Totale ospedalizzati", ospedalizzati + " (+" + varOspedalizzati + ')');
+        } else {
+            nationInfo.put("Totale ospedalizzati", ospedalizzati + " (+" + varOspedalizzati + ')');
+        }
+
+        if (varTerapiaIntensiva > 0) {
+            nationInfo.put("Terapia intensiva", terapiaIntensiva + " (+" + varTerapiaIntensiva + ')');
+        } else {
+            nationInfo.put("Terapia intensiva", terapiaIntensiva + " (" + varTerapiaIntensiva + ')');
+        }
+
+        if (varRicoverati > 0) {
+            nationInfo.put("Ricoverati", ricoverati + " (+" + varRicoverati + ')');
+        } else {
+            nationInfo.put("Ricoverati", ricoverati + " (" + varRicoverati + ')');
+        }
+
+        if (varIsolamentoDom > 0) {
+            nationInfo.put("Isolamento domiciliare", isolamentoDomiciliare + " (+" + varIsolamentoDom + ')');
+        } else {
+            nationInfo.put("Isolamento domiciliare", isolamentoDomiciliare + " (" + varIsolamentoDom + ')');
+        }
+
+        if (varTamponi > 0) {
+            nationInfo.put("Tamponi", tamponi + " (+" + varTamponi + ')');
+        } else {
+            nationInfo.put("Tamponi", tamponi + " (" + varTamponi + ')');
+        }
 
         HashMapAdapter hashMapAdapter = new HashMapAdapter(nationInfo);
         nationListView.setAdapter(hashMapAdapter);

@@ -28,6 +28,7 @@ import com.android.volley.toolbox.Volley;
 import com.davydh.covid_19.R;
 import com.davydh.covid_19.activity.MainActivity;
 import com.davydh.covid_19.adapter.HashMapAdapter;
+import com.davydh.covid_19.adapter.IntHashMapAdapter;
 import com.davydh.covid_19.model.Province;
 import com.davydh.covid_19.model.Region;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -303,7 +304,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         if (android.os.Build.VERSION.SDK_INT <= 23){
             Map<String,Integer> sortedMap = sortByComparator(provinceInfo,false);
-            HashMapAdapter hashMapAdapter = new HashMapAdapter(sortedMap);
+            IntHashMapAdapter hashMapAdapter = new IntHashMapAdapter(sortedMap);
             provincesListView.setAdapter(hashMapAdapter);
         } else{
             LinkedHashMap<String,Integer> sortedMap = new LinkedHashMap<>();
@@ -311,7 +312,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     .stream()
                     .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                     .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
-            HashMapAdapter hashMapAdapter = new HashMapAdapter(sortedMap);
+            IntHashMapAdapter hashMapAdapter = new IntHashMapAdapter(sortedMap);
             provincesListView.setAdapter(hashMapAdapter);
         }
     }
