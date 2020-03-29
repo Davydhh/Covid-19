@@ -270,10 +270,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             Marker marker = mMap.addMarker(new MarkerOptions().position(position).title(region.getNome()).snippet("Contagiati: " + region.getAttualmentePositivi()));
             marker.setTag(region.getNome());
 
-            if (!region.getNote().isEmpty()) {
-                marker.setSnippet("Note: "+ region.getNote());
-            }
-
             int recovered = region.getAttualmentePositivi();
 
             if (recovered > 10000) {
@@ -283,7 +279,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             } else {
                 marker.setIcon(bitmapDescriptorFromVector(context, R.drawable.ic_coronavirus_yellow));
             }
-
         }
     }
 
