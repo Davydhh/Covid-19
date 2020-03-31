@@ -185,18 +185,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                             int terapiaIntensiva = object.getInt("terapia_intensiva");
                             int totaleOspedalizzati = object.getInt("totale_ospedalizzati");
                             int isolamentoDomiciliare = object.getInt("isolamento_domiciliare");
-                            int attualmentePositivi = object.getInt("totale_attualmente_positivi");
-                            int nuoviPositivi = object.getInt("nuovi_attualmente_positivi");
+                            int attualmentePositivi = object.getInt("totale_positivi");
+                            int nuoviPositivi = object.getInt("variazione_totale_positivi");
                             int dimessi = object.getInt("dimessi_guariti");
                             int deceduti = object.getInt("deceduti");
                             int totaleCasi = object.getInt("totale_casi");
                             int tamponi = object.getInt("tamponi");
                             String note = object.getString("note_it");
+                            int totaleNuoviPositivi = object.getInt("nuovi_positivi");
 
                             Region region = new Region(data,stato,codiceRegionale,nome,latitude,
                                     longitude,ricoveratiConSintomi,terapiaIntensiva,totaleOspedalizzati,
                                     isolamentoDomiciliare,attualmentePositivi,nuoviPositivi,dimessi,
-                                    deceduti,totaleCasi,tamponi,note);
+                                    deceduti,totaleCasi,tamponi,note,totaleNuoviPositivi);
 
                             regionsData.add(region);
 

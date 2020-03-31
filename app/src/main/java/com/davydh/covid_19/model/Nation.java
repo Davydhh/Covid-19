@@ -13,10 +13,11 @@ public class Nation {
     private int deceduti;
     private int totaleCasi;
     private int tamponi;
+    private int totaleNuoviPositivi;
 
     public Nation(String data, String stato, int ricoveratiConSintomi, int terapiaIntensiva,
                   int totaleOspedalizzati, int isolamentoDomiciliare, int attualmentePositivi,
-                  int nuoviPositivi, int dimessi, int deceduti, int totaleCasi, int tamponi) {
+                  int nuoviPositivi, int dimessi, int deceduti, int totaleCasi, int tamponi, int totaleNuoviPositivi) {
         this.data = data;
         this.stato = stato;
         this.ricoveratiConSintomi = ricoveratiConSintomi;
@@ -29,6 +30,7 @@ public class Nation {
         this.deceduti = deceduti;
         this.totaleCasi = totaleCasi;
         this.tamponi = tamponi;
+        this.totaleNuoviPositivi = totaleNuoviPositivi;
     }
 
     public String getData() {
@@ -78,6 +80,8 @@ public class Nation {
     public int getTamponi() {
         return tamponi;
     }
+
+    public int getTotaleNuoviPositivi() { return totaleNuoviPositivi; }
 
     @Override
     public String toString() {

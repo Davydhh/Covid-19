@@ -98,16 +98,17 @@ public class DashboardFragment extends Fragment {
                             int terapiaIntensiva = object.getInt("terapia_intensiva");
                             int totaleOspedalizzati = object.getInt("totale_ospedalizzati");
                             int isolamentoDomiciliare = object.getInt("isolamento_domiciliare");
-                            int attualmentePositivi = object.getInt("totale_attualmente_positivi");
-                            int nuoviPositivi = object.getInt("nuovi_attualmente_positivi");
+                            int attualmentePositivi = object.getInt("totale_positivi");
+                            int nuoviPositivi = object.getInt("variazione_totale_positivi");
                             int dimessi = object.getInt("dimessi_guariti");
                             int deceduti = object.getInt("deceduti");
                             int totaleCasi = object.getInt("totale_casi");
                             int tamponi = object.getInt("tamponi");
+                            int totaleNuoviPositivi = object.getInt("nuovi_positivi");
 
                             Nation nation = new Nation(data,stato,ricoveratiConSintomi,terapiaIntensiva,
                                     totaleOspedalizzati,isolamentoDomiciliare,attualmentePositivi,
-                                    nuoviPositivi,dimessi,deceduti,totaleCasi,tamponi);
+                                    nuoviPositivi,dimessi,deceduti,totaleCasi,tamponi, totaleNuoviPositivi);
 
                             nationsData.add(nation);
 
@@ -157,13 +158,12 @@ public class DashboardFragment extends Fragment {
         int ricoverati = lastNationData.getRicoveratiConSintomi();
         int isolamentoDomiciliare = lastNationData.getIsolamentoDomiciliare();
         int tamponi = lastNationData.getTamponi();
+        int totaleNuoviCasiPositivi = lastNationData.getTotaleNuoviPositivi();
 
         Nation previousNationData = nationsData.get(nationsData.size()-2);
         int previousDeaths = previousNationData.getDeceduti();
         int previousRecovered = previousNationData.getDimessi();
 
-        int totaleNuoviCasiPositivi =  nuoviCasiPositivi + (dimessi - previousRecovered)
-                + (deceduti - previousDeaths);
         int variazioneDeceduti = deceduti - previousDeaths;
         int variazioneDimessi = dimessi - previousRecovered;
 
@@ -248,16 +248,9 @@ public class DashboardFragment extends Fragment {
 
     private void getTotalPositiveVariation() {
         totalNewPositiveData = new ArrayList<>();
-       for (int i = 0; i < nationsData.size(); i++) {
-           Nation nation = nationsData.get(i);
-           int date = nation.getNuoviPositivi();
-           if (i != 0) {
-               Nation previousNation = nationsData.get(i-1);
-               date += (nation.getDimessi() - previousNation.getDimessi())
-                       + (nation.getDeceduti() - previousNation.getDeceduti());
-           }
-           totalNewPositiveData.add(date);
-       }
+        for (Nation nation: nationsData) {
+            totalNewPositiveData.add(nation.getTotaleNuoviPositivi());
+        }
     }
 
     public static List<Nation> getNationsData() {
