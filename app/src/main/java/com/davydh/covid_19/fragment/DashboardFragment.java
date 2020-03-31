@@ -143,7 +143,7 @@ public class DashboardFragment extends Fragment {
         String day = date.substring(8,10);
         String month = date.substring(5,7);
         String year = date.substring(0,4);
-        dataText.setText("Dati aggiornati al: " + day + '/' + month + '/' + year);
+        dataText.setText(context.getString(R.string.data_name, day, month, year));
     }
 
     private void fillNationInfo() {

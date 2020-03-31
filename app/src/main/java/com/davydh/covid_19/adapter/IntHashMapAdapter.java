@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.davydh.covid_19.R;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Map;
 
 public class IntHashMapAdapter extends BaseAdapter {
@@ -44,8 +45,8 @@ public class IntHashMapAdapter extends BaseAdapter {
         if (convertView == null) {
             result = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.contentText = ((TextView) result.findViewById(R.id.text_list_item));
-            viewHolder.infoText = ((TextView) result.findViewById(R.id.number_list_item));
+            viewHolder.contentText = (result.findViewById(R.id.text_list_item));
+            viewHolder.infoText = (result.findViewById(R.id.number_list_item));
             result.setTag(viewHolder);
         } else {
             result = convertView;
@@ -55,7 +56,7 @@ public class IntHashMapAdapter extends BaseAdapter {
         Map.Entry<String, Integer> item = getItem(position);
 
         viewHolder.contentText.setText(item.getKey());
-        viewHolder.infoText.setText(Integer.toString(item.getValue()));
+        viewHolder.infoText.setText(String.format(Locale.ITALIAN, "%d", item.getValue()));
 
         return result;
     }

@@ -27,7 +27,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.davydh.covid_19.R;
 import com.davydh.covid_19.activity.MainActivity;
-import com.davydh.covid_19.adapter.HashMapAdapter;
 import com.davydh.covid_19.adapter.IntHashMapAdapter;
 import com.davydh.covid_19.model.Province;
 import com.davydh.covid_19.model.Region;
@@ -54,6 +53,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private static final String TAG = MapFragment.class.getSimpleName();
@@ -117,7 +117,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        provincesListView = getActivity().findViewById(R.id.province_list_view);
+        provincesListView = Objects.requireNonNull(getActivity()).findViewById(R.id.province_list_view);
 
         provincesListView.setOnTouchListener((v, event) -> {
             int action = event.getAction();
@@ -179,8 +179,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                             String stato = object.getString("stato");
                             int codiceRegionale = object.getInt("codice_regione");
                             String nome = object.getString("denominazione_regione");
-                            double latitude = object.getDouble("latitudine");
-                            double longitude = object.getDouble("longitudine");
+                            double latitude = object.getDouble("lat");
+                            double longitude = object.getDouble("long");
                             int ricoveratiConSintomi = object.getInt("ricoverati_con_sintomi");
                             int terapiaIntensiva = object.getInt("terapia_intensiva");
                             int totaleOspedalizzati = object.getInt("totale_ospedalizzati");
@@ -322,7 +322,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
-        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Objects.requireNonNull(vectorDrawable).setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
         Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
@@ -331,7 +331,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     private static Map<String, Integer> sortByComparator(Map<String, Integer> unsortMap, final boolean order) {
 
-        List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
+        List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortMap.entrySet());
 
         Collections.sort(list, (o1, o2) -> {
             if (order) {
@@ -342,7 +342,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             }
         });
 
-        Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+        Map<String, Integer> sortedMap = new LinkedHashMap<>();
         for (Map.Entry<String, Integer> entry : list) {
             sortedMap.put(entry.getKey(), entry.getValue());
         }

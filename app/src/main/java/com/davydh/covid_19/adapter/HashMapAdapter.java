@@ -48,8 +48,8 @@ public class HashMapAdapter extends BaseAdapter {
         if (convertView == null) {
             result = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.contentText = ((TextView) result.findViewById(R.id.text_list_item));
-            viewHolder.infoText = ((TextView) result.findViewById(R.id.number_list_item));
+            viewHolder.contentText = result.findViewById(R.id.text_list_item);
+            viewHolder.infoText = result.findViewById(R.id.number_list_item);
             result.setTag(viewHolder);
         } else {
             result = convertView;
