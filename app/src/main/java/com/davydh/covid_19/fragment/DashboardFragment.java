@@ -201,9 +201,9 @@ public class DashboardFragment extends Fragment {
         }
 
         if (varDimessi > 0) {
-            nationInfo.put("Nuovi dimessi", variazioneDimessi + " (+" + varDimessi + ')');
+            nationInfo.put("Nuovi guariti", variazioneDimessi + " (+" + varDimessi + ')');
         } else {
-            nationInfo.put("Nuovi dimessi", variazioneDimessi + " (" + varDimessi + ')');
+            nationInfo.put("Nuovi guariti", variazioneDimessi + " (" + varDimessi + ')');
         }
 
         if (varDeceduti > 0) {
@@ -211,7 +211,6 @@ public class DashboardFragment extends Fragment {
         } else {
             nationInfo.put("Nuovi deceduti", variazioneDeceduti + " (" + varDeceduti + ')');
         }
-
 
         if (varOspedalizzati > 0) {
             nationInfo.put("Totale ospedalizzati", ospedalizzati + " (+" + varOspedalizzati + ')');

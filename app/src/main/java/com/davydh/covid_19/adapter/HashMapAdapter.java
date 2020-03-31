@@ -69,7 +69,7 @@ public class HashMapAdapter extends BaseAdapter {
         ForegroundColorSpan fcsRed = new ForegroundColorSpan(Color.RED);
         ForegroundColorSpan fcsGreen = new ForegroundColorSpan(Color.parseColor("#008000"));
 
-        if (key.contains("dimessi")) {
+        if (key.contains("guariti")) {
             if (value.contains("+")) {
                 int charPosition = value.indexOf("+");
                 str.setSpan(fcsGreen,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

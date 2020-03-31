@@ -108,8 +108,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             Log.e(TAG, "Can't find style. Error: ", e);
         }
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.9109,12.4818), 5.5f));
-
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.9109,12.4818), 5f));
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
     }
@@ -321,8 +320,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-    private static Map<String, Integer> sortByComparator(Map<String, Integer> unsortMap, final boolean order)
-    {
+    private static Map<String, Integer> sortByComparator(Map<String, Integer> unsortMap, final boolean order) {
 
         List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
 
