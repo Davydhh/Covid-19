@@ -28,9 +28,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -41,8 +41,8 @@ public class DashboardFragment extends Fragment {
     private TextView deadText;
     private TextView dataText;
     private ListView nationListView;
-    private static List<Nation> nationsData;
-    private static List<Integer> totalNewPositiveData;
+    public static List<Nation> nationsData;
+    public static List<Integer> totalNewPositiveData;
     private Nation lastNationData;
     private Context context;
     private SharedPreferences preferences;
@@ -136,9 +136,9 @@ public class DashboardFragment extends Fragment {
     }
 
     private void setText() {
-        infectedText.setText(Integer.toString(lastNationData.getAttualmentePositivi()));
-        recoveredText.setText(Integer.toString(lastNationData.getDimessi()));
-        deadText.setText(Integer.toString(lastNationData.getDeceduti()));
+        infectedText.setText(String.format(Locale.ITALIAN, "%d", lastNationData.getAttualmentePositivi()));
+        recoveredText.setText(String.format(Locale.ITALIAN, "%d", lastNationData.getDimessi()));
+        deadText.setText(String.format(Locale.ITALIAN, "%d", lastNationData.getDeceduti()));
         String date = lastNationData.getData();
         String day = date.substring(8,10);
         String month = date.substring(5,7);
@@ -170,9 +170,7 @@ public class DashboardFragment extends Fragment {
         Nation oldNationData = nationsData.get(nationsData.size()-3);
 
         int varTotaleCasi = totaleCasi - previousNationData.getTotaleCasi();
-        int varTotaleNuoviCasiPositivi = totaleNuoviCasiPositivi - (previousNationData.getNuoviPositivi()
-                + (previousRecovered - oldNationData.getDimessi()
-                + (previousDeaths - oldNationData.getDeceduti())));
+        int varTotaleNuoviCasiPositivi = totaleNuoviCasiPositivi - previousNationData.getTotaleNuoviPositivi();
         int varNuoviCasiPositivi = nuoviCasiPositivi - previousNationData.getNuoviPositivi();
         int varDimessi = variazioneDimessi - (previousRecovered - oldNationData.getDimessi());
         int varDeceduti = variazioneDeceduti - (previousDeaths - oldNationData.getDeceduti());
@@ -251,13 +249,5 @@ public class DashboardFragment extends Fragment {
         for (Nation nation: nationsData) {
             totalNewPositiveData.add(nation.getTotaleNuoviPositivi());
         }
-    }
-
-    public static List<Nation> getNationsData() {
-        return nationsData;
-    }
-
-    public static List<Integer> getTotalNewPositiveData() {
-        return totalNewPositiveData;
     }
 }

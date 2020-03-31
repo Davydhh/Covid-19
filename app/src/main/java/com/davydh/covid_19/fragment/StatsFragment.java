@@ -24,6 +24,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class StatsFragment extends Fragment {
 
@@ -47,11 +48,11 @@ public class StatsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        nationLineChart = getActivity().findViewById(R.id.nation_chart);
+        nationLineChart = Objects.requireNonNull(getActivity()).findViewById(R.id.nation_chart);
         newRecoveredLineChart = getActivity().findViewById(R.id.new_recovered_chart);
 
-        List<Nation> nationsData = DashboardFragment.getNationsData();
-        List<Integer> totalNewPositiveData = DashboardFragment.getTotalNewPositiveData();
+        List<Nation> nationsData = DashboardFragment.nationsData;
+        List<Integer> totalNewPositiveData = DashboardFragment.totalNewPositiveData;
 
         setChartData(nationsData,totalNewPositiveData);
     }

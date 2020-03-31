@@ -179,8 +179,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                             String stato = object.getString("stato");
                             int codiceRegionale = object.getInt("codice_regione");
                             String nome = object.getString("denominazione_regione");
-                            double latitude = object.getDouble("lat");
-                            double longitude = object.getDouble("long");
+                            double latitude = object.getDouble("latitudine");
+                            double longitude = object.getDouble("longitudine");
                             int ricoveratiConSintomi = object.getInt("ricoverati_con_sintomi");
                             int terapiaIntensiva = object.getInt("terapia_intensiva");
                             int totaleOspedalizzati = object.getInt("totale_ospedalizzati");
@@ -267,7 +267,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         for (int i = 0; i < regionsData.size(); i++) {
             Region region = regionsData.get(i);
             LatLng position = new LatLng(region.getLatitude(), region.getLongitude());
-            Marker marker = mMap.addMarker(new MarkerOptions().position(position).title(region.getNome()).snippet("Contagiati: " + region.getAttualmentePositivi()));
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(position).title(region.getNome()));
+            if (region.getTotaleNuoviPositivi() > 0) {
+               marker.setSnippet("Contagiati: " + region.getAttualmentePositivi()
+                       + " (+" + region.getTotaleNuoviPositivi() + ')');
+            } else {
+                marker.setSnippet("Contagiati: " + region.getAttualmentePositivi()
+                        + " (-" + region.getTotaleNuoviPositivi() + ')');
+            }
             marker.setTag(region.getNome());
 
             int recovered = region.getAttualmentePositivi();
