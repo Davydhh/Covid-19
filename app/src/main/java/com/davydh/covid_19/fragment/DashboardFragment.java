@@ -213,7 +213,7 @@ public class DashboardFragment extends Fragment {
         if (varOspedalizzati > 0) {
             nationInfo.put("Totale ospedalizzati", ospedalizzati + " (+" + varOspedalizzati + ')');
         } else {
-            nationInfo.put("Totale ospedalizzati", ospedalizzati + " (+" + varOspedalizzati + ')');
+            nationInfo.put("Totale ospedalizzati", ospedalizzati + " (" + varOspedalizzati + ')');
         }
 
         if (varTerapiaIntensiva > 0) {

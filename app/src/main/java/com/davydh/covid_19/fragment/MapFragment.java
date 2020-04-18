@@ -274,7 +274,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                        + " (+" + region.getTotaleNuoviPositivi() + ')');
             } else {
                 marker.setSnippet("Contagiati: " + region.getAttualmentePositivi()
-                        + " (-" + region.getTotaleNuoviPositivi() + ')');
+                        + " (" + region.getTotaleNuoviPositivi() + ')');
             }
             marker.setTag(region.getNome());
 
