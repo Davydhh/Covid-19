@@ -71,18 +71,18 @@ public class HashMapAdapter extends BaseAdapter {
 
         if (key.contains("guariti")) {
             if (value.contains("+")) {
-                int charPosition = value.indexOf("+");
+                int charPosition = value.indexOf('+');
                 str.setSpan(fcsGreen,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
-                int charPosition = value.indexOf("-");
+                int charPosition = value.lastIndexOf('-');
                 str.setSpan(fcsRed,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         } else {
             if (value.contains("+")) {
-                int charPosition = value.indexOf("+");
+                int charPosition = value.indexOf('+');
                 str.setSpan(fcsRed,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
-                int charPosition = value.indexOf("-");
+                int charPosition = value.lastIndexOf('-');
                 str.setSpan(fcsGreen,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
