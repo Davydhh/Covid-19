@@ -1,0 +1,21 @@
+
+œ
+java:S11862"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ı˜«ñøÿÿÿÿ
+A
+java:S2386W"&Make member "nationsData" "protected".(ÒŒÚˆùÿÿÿÿ
+M
+java:S2696ø"6Make the enclosing method "static" or remove this set.(÷ç¿×
+Q
+java:S2696W"6Make the enclosing method "static" or remove this set.(ÒŒÚˆùÿÿÿÿ
+U
+java:S1444-":Make this "public static totalNewPositiveData" field final(áƒ´¦ıÿÿÿÿ
+{
+java:S1104-"`Make totalNewPositiveData a static final constant or non-public and provide accessors if needed.(áƒ´¦ıÿÿÿÿ
+m
+java:S1104,"WMake nationsData a static final constant or non-public and provide accessors if needed.(°ÇÉ
+G
+java:S1444,"1Make this "public static nationsData" field final(°ÇÉ
+F
+java:S2386ø"/Make member "totalNewPositiveData" "protected".(÷ç¿×
+n
+java:S3776•"RRefactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.(Õèßùÿÿÿÿ

@@ -2,6 +2,7 @@ package com.davydh.covid_19.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.davydh.covid_19.R;
+import com.davydh.covid_19.fragment.NewsFragment;
 import com.davydh.covid_19.fragment.DashboardFragment;
 import com.davydh.covid_19.fragment.InfoBottomSheetDialog;
 import com.davydh.covid_19.fragment.MapFragment;
@@ -28,9 +30,10 @@ public class MainActivity extends AppCompatActivity {
     public static SharedPreferences preferences;
 
     private BottomNavigationView bottomNavigation;
-    private FragmentManager fragmentManager;
+    private static FragmentManager fragmentManager;
     private DashboardFragment dashboardFragment;
     private MapFragment mapFragment;
+    private static FragmentTransaction ft;
 
     private static BottomSheetBehavior sheetBehavior;
 
@@ -43,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
         preferences.edit().putBoolean(DASH_KEY,false).apply();
         preferences.edit().putBoolean(MAP_KEY,false).apply();
 
-        LinearLayout bottom_sheet = findViewById(R.id.province_bottom_sheet);
-        sheetBehavior = BottomSheetBehavior.from(bottom_sheet);
+        LinearLayout bottomSheet = findViewById(R.id.province_bottom_sheet);
+        sheetBehavior = BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         dashboardFragment = new DashboardFragment();
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
         bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft = fragmentManager.beginTransaction();
 
             if (item.isChecked()) {
                 return false;
@@ -66,16 +69,22 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.dashboard_item:
-                    ft.replace(R.id.fragment_container, dashboardFragment).commit();
+                    replaceFragment(dashboardFragment, false);
                     if (sheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
                         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                     }
                     return true;
                 case R.id.map_item:
-                    ft.replace(R.id.fragment_container, mapFragment).commit();
+                    replaceFragment(mapFragment, false);
                     return true;
                 case R.id.stats_item:
                     ft.replace(R.id.fragment_container, new StatsFragment()).commit();
+                    if (sheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
+                        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                    }
+                    return true;
+                case R.id.news_item:
+                    replaceFragment(new NewsFragment(), false);
                     if (sheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
                         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                     }
@@ -84,6 +93,15 @@ public class MainActivity extends AppCompatActivity {
                     return false;
             }
         });
+    }
+
+    public static void replaceFragment(Fragment fragment, boolean backStack) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        if (backStack) {
+            transaction.addToBackStack(null);
+        }
+        transaction.commit();
     }
 
     @Override

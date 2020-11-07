@@ -191,7 +191,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                             int deceduti = object.getInt("deceduti");
                             int totaleCasi = object.getInt("totale_casi");
                             int tamponi = object.getInt("tamponi");
-                            String note = object.getString("note_it");
+                            String note = object.getString("note");
                             int totaleNuoviPositivi = object.getInt("nuovi_positivi");
 
                             Region region = new Region(data,stato,codiceRegionale,nome,latitude,

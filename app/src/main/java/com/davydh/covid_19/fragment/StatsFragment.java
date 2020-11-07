@@ -12,11 +12,15 @@ import androidx.fragment.app.Fragment;
 
 import com.davydh.covid_19.R;
 import com.davydh.covid_19.model.Nation;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -30,10 +34,11 @@ public class StatsFragment extends Fragment {
 
     private LineChart nationLineChart;
     private LineChart newRecoveredLineChart;
+    private BarChart contagionsPercentageBarChart;
     private List<Entry> infectedEntries = new ArrayList<>();
     private List<Entry> recoveredEntries = new ArrayList<>();
     private List<Entry> deadEntries = new ArrayList<>();
-    private List<Entry> newInfectedEntries = new ArrayList<>();
+    private List<BarEntry> contagionsPercentage = new ArrayList<>();
     private List<Entry> totalNewPositiveEntries = new ArrayList<>();
 
     public StatsFragment() {}
@@ -50,6 +55,7 @@ public class StatsFragment extends Fragment {
 
         nationLineChart = Objects.requireNonNull(getActivity()).findViewById(R.id.nation_chart);
         newRecoveredLineChart = getActivity().findViewById(R.id.new_recovered_chart);
+        contagionsPercentageBarChart = getActivity().findViewById(R.id.contagions_percentage_chart);
 
         List<Nation> nationsData = DashboardFragment.nationsData;
         List<Integer> totalNewPositiveData = DashboardFragment.totalNewPositiveData;
@@ -59,11 +65,19 @@ public class StatsFragment extends Fragment {
 
     private void setChartData(List<Nation> inputData, List<Integer> inputDataNewRecovered) {
         float count = 0;
-        for (Nation nation: inputData) {
+        for (int i = 0; i < inputData.size(); i++) {
+            Nation nation = inputData.get(i);
             infectedEntries.add(new Entry(count,(float) nation.getAttualmentePositivi()));
             recoveredEntries.add(new Entry(count,(float) nation.getDimessi()));
             deadEntries.add(new Entry(count,(float) nation.getDeceduti()));
-            newInfectedEntries.add(new Entry(count, nation.getNuoviPositivi()));
+            int varTamponi = nation.getTamponi();
+
+            if (i > 0) {
+               varTamponi -= inputData.get(i - 1).getTamponi();
+            }
+
+            contagionsPercentage.add(new BarEntry(count,
+                    ((float) nation.getTotaleNuoviPositivi() /  varTamponi  * 100)));
             count++;
         }
 
@@ -72,12 +86,18 @@ public class StatsFragment extends Fragment {
         }
 
         LineDataSet infectedDataSet = new LineDataSet(infectedEntries, "Attualmente positivi");
+        infectedDataSet.setDrawCircles(false);
         LineDataSet recoveredDataSet = new LineDataSet(recoveredEntries, "Dimessi");
+        recoveredDataSet.setDrawCircles(false);
         LineDataSet deadDataSet = new LineDataSet(deadEntries, "Deceduti");
-        LineDataSet newInfectedDataSet = new LineDataSet(newInfectedEntries, "Nuovi casi positivi");
+        deadDataSet.setDrawCircles(false);
+        BarDataSet contagionsPercentageDataSet = new BarDataSet(contagionsPercentage, "Percentuale" +
+                " " +
+                "contagi");
         LineDataSet newTotalInfectedDataSet = new LineDataSet(totalNewPositiveEntries, "Totale nuovi casi positivi");
+        newTotalInfectedDataSet.setDrawCircles(false);
 
-        newInfectedDataSet.setColor(Color.RED);
+        contagionsPercentageDataSet.setColor(Color.GRAY);
         infectedDataSet.setColor(Color.RED);
         recoveredDataSet.setColor(Color.GREEN);
         deadDataSet.setColor(Color.BLACK);
@@ -87,31 +107,61 @@ public class StatsFragment extends Fragment {
         nationDataSets.add(infectedDataSet);
         nationDataSets.add(recoveredDataSet);
         nationDataSets.add(deadDataSet);
+
         LineData nationData = new LineData(nationDataSets);
         nationLineChart.setData(nationData);
-        setChartStyle(nationLineChart);
+        setLineChartStyle(nationLineChart);
         nationLineChart.invalidate();
 
-        List<ILineDataSet> positiveDataSets = new ArrayList<>();
-        positiveDataSets.add(newInfectedDataSet);
-        positiveDataSets.add(newTotalInfectedDataSet);
-        LineData newInfectedData = new LineData(positiveDataSets);
-        newRecoveredLineChart.setData(newInfectedData);
-        setChartStyle(newRecoveredLineChart);
+        LineData positiveDataSets = new LineData(newTotalInfectedDataSet);
+        newRecoveredLineChart.setData(positiveDataSets);
+        setLineChartStyle(newRecoveredLineChart);
         newRecoveredLineChart.invalidate();
+
+        BarData contagionPercentageDataSets = new BarData(contagionsPercentageDataSet);
+        contagionsPercentageBarChart.setData(contagionPercentageDataSets);
+        setBarChartStyle(contagionsPercentageBarChart);
+        contagionsPercentageBarChart.invalidate();
     }
 
-    private void setChartStyle(LineChart chart) {
+    private void setLineChartStyle(LineChart chart) {
         chart.setExtraBottomOffset(10f);
 
         YAxis yAxis = chart.getAxisLeft();
-        yAxis.setAxisMinimum(0f);
         yAxis.setDrawGridLines(false);
 
         YAxis leftYAxis = chart.getAxisRight();
         leftYAxis.setDrawGridLines(false);
         leftYAxis.setDrawLabels(false);
         leftYAxis.setDrawAxisLine(false);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setDrawLabels(false);
+        xAxis.setDrawGridLines(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        Legend legend = chart.getLegend();
+        legend.setFormSize(10f);
+        legend.setForm(Legend.LegendForm.CIRCLE);
+        legend.setTextSize(10f);
+        legend.setXEntrySpace(10f);
+
+        Description description = chart.getDescription();
+        description.setEnabled(false);
+    }
+
+    private void setBarChartStyle(BarChart chart) {
+        chart.setExtraBottomOffset(10f);
+
+        YAxis yAxis = chart.getAxisLeft();
+        yAxis.setDrawGridLines(false);
+        yAxis.setAxisMinimum(0f);
+
+        YAxis rightAxis = chart.getAxisRight();
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setDrawLabels(false);
+        rightAxis.setDrawAxisLine(false);
+        rightAxis.setAxisMinimum(0f);
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setDrawLabels(false);

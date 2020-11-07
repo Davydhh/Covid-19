@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="com.davydh.covid_19.fragment.NewsFragment"
+        android:label="NewsFragment"
+        tools:layout="@layout/fragment_country_news"/>
+    <fragment
+        android:id="@+id/newsDetailFragment"
+        android:name="com.davydh.covid_19.fragment.NewsDetailFragment"
+        android:label="NewsDetailFragment"
+        tools:layout="@layout/fragment_country_news_detail">
+        <argument
+            android:name="article"
+            app:argType="com.davydh.covid_19.model.Article" />
+    </fragment>
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.davydh.covid_19.fragment.DashboardFragment"
+        android:label="DashboardFragment" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_newsDetailFragment"
+            app:destination="@id/newsDetailFragment" />
+    </fragment>
+</navigation>

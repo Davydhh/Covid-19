@@ -18,4 +18,10 @@
         android:icon="@drawable/ic_show_chart"
         android:checked="false"/>
 
+    <item
+        android:id="@+id/news_item"
+        android:title="News"
+        android:icon="@drawable/ic_baseline_article_24"
+        android:checked="false"/>
+
 </menu>
