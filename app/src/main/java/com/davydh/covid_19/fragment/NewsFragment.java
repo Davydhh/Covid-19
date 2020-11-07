@@ -7,11 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +23,7 @@ import com.davydh.covid_19.viewmodel.NewsViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -132,19 +131,6 @@ public class NewsFragment extends Fragment {
                     newsViewModel.setCurrentResults(articlesResource.getData().size());
                 }
             }
-
-            if (articlesResource.getData() != null) {
-                Log.d(TAG, "Success - Total results: " + articlesResource.getTotalResults() + " Status code: " +
-                        articlesResource.getStatusCode() + "Status message: " + articlesResource.getStatusMessage());
-
-                for (int i = 0; i < articlesResource.getData().size(); i++) {
-                    if (articlesResource.getData().get(i) != null) {
-                        Log.d(TAG, "Article: " + articlesResource.getData().get(i).getTitle());
-                    }
-                }
-            } else {
-                Log.d(TAG, "Error - Status code: " + articlesResource.getStatusCode() + " Status message: " + articlesResource.getStatusMessage());
-            }
         });
     }
 
@@ -156,6 +142,6 @@ public class NewsFragment extends Fragment {
             return articleListResource.getData();
         }
 
-        return null;
+        return new ArrayList<>();
     }
 }

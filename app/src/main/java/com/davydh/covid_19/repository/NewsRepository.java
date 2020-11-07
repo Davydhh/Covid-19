@@ -13,8 +13,6 @@ import com.davydh.covid_19.utils.Constants;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 

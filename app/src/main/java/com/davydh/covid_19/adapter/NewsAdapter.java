@@ -137,7 +137,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             textViewArticleTitle.setText(article.getTitle());
             textViewArticleDescription.setText(article.getDescription());
-            textViewArticleDate.setText(DateTimeUtil.getDate(article.getPublishedAt()));
+            textViewArticleDate.setText(DateTimeUtil.getArticleDate(article.getPublishedAt()));
 
             itemView.setOnClickListener(v -> onItemClickListener.onItemClick(article));
         }

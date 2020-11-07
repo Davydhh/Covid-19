@@ -1,18 +1,16 @@
 package com.davydh.covid_19.model;
 
 public class Province {
-    private String data;
-    private String stato;
-    private int codiceRegione;
-    private String nomeRegione;
-    private int codiceProvincia;
-    private String nomeProvincia;
-    private String siglaProvincia;
-    private double latitude;
-    private double longitude;
-    private int totaleCasi;
+    private final String data;
+    private final String stato;
+    private final int codiceRegione;
+    private final String nomeRegione;
+    private final int codiceProvincia;
+    private final String nomeProvincia;
+    private final String siglaProvincia;
+    private final int totaleCasi;
 
-    public Province(String data, String stato, int codiceRegione, String nomeRegione, int codiceProvincia, String nomeProvincia, String siglaProvincia, double latitude, double longitude, int totaleCasi) {
+    public Province(String data, String stato, int codiceRegione, String nomeRegione, int codiceProvincia, String nomeProvincia, String siglaProvincia, int totaleCasi) {
         this.data = data;
         this.stato = stato;
         this.codiceRegione = codiceRegione;
@@ -20,8 +18,6 @@ public class Province {
         this.codiceProvincia = codiceProvincia;
         this.nomeProvincia = nomeProvincia;
         this.siglaProvincia = siglaProvincia;
-        this.latitude = latitude;
-        this.longitude = longitude;
         this.totaleCasi = totaleCasi;
     }
 
@@ -49,19 +45,25 @@ public class Province {
         return siglaProvincia;
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
     public int getTotaleCasi() {
         return totaleCasi;
     }
 
     public String getNomeProvincia() {
         return nomeProvincia;
+    }
+
+    @Override
+    public String toString() {
+        return "Province{" +
+                "data='" + data + '\'' +
+                ", stato='" + stato + '\'' +
+                ", codiceRegione=" + codiceRegione +
+                ", nomeRegione='" + nomeRegione + '\'' +
+                ", codiceProvincia=" + codiceProvincia +
+                ", nomeProvincia='" + nomeProvincia + '\'' +
+                ", siglaProvincia='" + siglaProvincia + '\'' +
+                ", totaleCasi=" + totaleCasi +
+                '}';
     }
 }

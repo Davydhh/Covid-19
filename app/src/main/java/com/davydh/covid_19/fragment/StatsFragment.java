@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.davydh.covid_19.R;
+import com.davydh.covid_19.databinding.FragmentStatsLayoutBinding;
 import com.davydh.covid_19.model.Nation;
+import com.davydh.covid_19.viewmodel.NationViewModel;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -28,42 +30,43 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class StatsFragment extends Fragment {
 
-    private LineChart nationLineChart;
-    private LineChart newRecoveredLineChart;
-    private BarChart contagionsPercentageBarChart;
-    private List<Entry> infectedEntries = new ArrayList<>();
-    private List<Entry> recoveredEntries = new ArrayList<>();
-    private List<Entry> deadEntries = new ArrayList<>();
-    private List<BarEntry> contagionsPercentage = new ArrayList<>();
-    private List<Entry> totalNewPositiveEntries = new ArrayList<>();
+    private FragmentStatsLayoutBinding binding;
 
     public StatsFragment() {}
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_stats_layout, container, false);
+        binding = FragmentStatsLayoutBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        nationLineChart = Objects.requireNonNull(getActivity()).findViewById(R.id.nation_chart);
-        newRecoveredLineChart = getActivity().findViewById(R.id.new_recovered_chart);
-        contagionsPercentageBarChart = getActivity().findViewById(R.id.contagions_percentage_chart);
+        NationViewModel nationViewModel = new ViewModelProvider(requireActivity()).get(NationViewModel.class);
 
-        List<Nation> nationsData = DashboardFragment.nationsData;
-        List<Integer> totalNewPositiveData = DashboardFragment.totalNewPositiveData;
+        List<Nation> nationsData = nationViewModel.getNationData().getValue().getData();
+        List<Integer> totalNewPositiveData = new ArrayList<>();
+
+        for (Nation nation: nationsData) {
+            totalNewPositiveData.add(nation.getTotaleNuoviPositivi());
+        }
 
         setChartData(nationsData,totalNewPositiveData);
     }
 
     private void setChartData(List<Nation> inputData, List<Integer> inputDataNewRecovered) {
+        List<Entry> infectedEntries = new ArrayList<>();
+        List<Entry> recoveredEntries = new ArrayList<>();
+        List<Entry> deadEntries = new ArrayList<>();
+        List<BarEntry> contagionsPercentage = new ArrayList<>();
+        List<Entry> totalNewPositiveEntries = new ArrayList<>();
+
         float count = 0;
         for (int i = 0; i < inputData.size(); i++) {
             Nation nation = inputData.get(i);
@@ -91,9 +94,8 @@ public class StatsFragment extends Fragment {
         recoveredDataSet.setDrawCircles(false);
         LineDataSet deadDataSet = new LineDataSet(deadEntries, "Deceduti");
         deadDataSet.setDrawCircles(false);
-        BarDataSet contagionsPercentageDataSet = new BarDataSet(contagionsPercentage, "Percentuale" +
-                " " +
-                "contagi");
+        BarDataSet contagionsPercentageDataSet = new BarDataSet(contagionsPercentage,
+                "Percentuale contagi (rapporto tamponi - nuovi positivi)");
         LineDataSet newTotalInfectedDataSet = new LineDataSet(totalNewPositiveEntries, "Totale nuovi casi positivi");
         newTotalInfectedDataSet.setDrawCircles(false);
 
@@ -109,19 +111,19 @@ public class StatsFragment extends Fragment {
         nationDataSets.add(deadDataSet);
 
         LineData nationData = new LineData(nationDataSets);
-        nationLineChart.setData(nationData);
-        setLineChartStyle(nationLineChart);
-        nationLineChart.invalidate();
+        binding.nationChart.setData(nationData);
+        setLineChartStyle(binding.nationChart);
+        binding.nationChart.invalidate();
 
         LineData positiveDataSets = new LineData(newTotalInfectedDataSet);
-        newRecoveredLineChart.setData(positiveDataSets);
-        setLineChartStyle(newRecoveredLineChart);
-        newRecoveredLineChart.invalidate();
+        binding.newRecoveredChart.setData(positiveDataSets);
+        setLineChartStyle(binding.newRecoveredChart);
+        binding.newRecoveredChart.invalidate();
 
         BarData contagionPercentageDataSets = new BarData(contagionsPercentageDataSet);
-        contagionsPercentageBarChart.setData(contagionPercentageDataSets);
-        setBarChartStyle(contagionsPercentageBarChart);
-        contagionsPercentageBarChart.invalidate();
+        binding.contagionsPercentageChart.setData(contagionPercentageDataSets);
+        setBarChartStyle(binding.contagionsPercentageChart);
+        binding.contagionsPercentageChart.invalidate();
     }
 
     private void setLineChartStyle(LineChart chart) {

@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +66,7 @@ public class NewsDetailFragment extends Fragment {
         } else {
             binding.imageViewArticlePictureDetail.setVisibility(View.GONE);
         }
-        binding.dataArticleDetail.setText(DateTimeUtil.getDate(article.getPublishedAt()));
+        binding.dataArticleDetail.setText(DateTimeUtil.getArticleDate(article.getPublishedAt()));
         binding.linkArticle.setText(article.getUrl());
     }
 }

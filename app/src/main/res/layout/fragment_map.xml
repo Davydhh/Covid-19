@@ -32,7 +32,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" > 10.000"
+                android:text=" Zona rossa"
                 android:textSize="15sp"
                 android:textStyle="bold"/>
 
@@ -55,7 +55,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" > 5.000"
+                android:text=" Zona arancione"
                 android:textSize="15sp"
                 android:textStyle="bold"/>
 
@@ -78,7 +78,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/yellow_legend"
+                android:text=" Zona gialla"
                 android:textSize="15sp"
                 android:textStyle="bold"/>
 

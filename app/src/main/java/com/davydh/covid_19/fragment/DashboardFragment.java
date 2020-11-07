@@ -1,152 +1,74 @@
 package com.davydh.covid_19.fragment;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
-import com.davydh.covid_19.R;
-import com.davydh.covid_19.activity.MainActivity;
 import com.davydh.covid_19.adapter.HashMapAdapter;
+import com.davydh.covid_19.databinding.FragmentDashboardLayoutBinding;
 import com.davydh.covid_19.model.Nation;
+import com.davydh.covid_19.utils.DateTimeUtil;
+import com.davydh.covid_19.viewmodel.NationViewModel;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 public class DashboardFragment extends Fragment {
+    private static final String TAG = DashboardFragment.class.getSimpleName();
 
-    private TextView infectedText;
-    private TextView recoveredText;
-    private TextView deadText;
-    private TextView dataText;
-    private ListView nationListView;
-    public static List<Nation> nationsData;
-    public static List<Integer> totalNewPositiveData;
-    private Nation lastNationData;
-    private Context context;
-    private SharedPreferences preferences;
+    private NationViewModel nationViewModel;
+    private FragmentDashboardLayoutBinding binding;
 
     public DashboardFragment() {}
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_dashboard_layout, container, false);
-        infectedText = rootView.findViewById(R.id.infected_text);
-        recoveredText = rootView.findViewById(R.id.recovered_text);
-        deadText = rootView.findViewById(R.id.dead_text);
-        dataText = rootView.findViewById(R.id.data_text);
-        nationListView = rootView.findViewById(R.id.nation_info_list);
-        return rootView;
+        binding = FragmentDashboardLayoutBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        context = Objects.requireNonNull(getActivity()).getApplicationContext();
+        nationViewModel = new ViewModelProvider(requireActivity()).get(NationViewModel.class);
 
-        preferences = getActivity().getSharedPreferences(MainActivity.PREFS_KEY,0);
-
-        if (!preferences.getBoolean(MainActivity.DASH_KEY, false)) {
-            getNationDataFromServer();
-        } else {
-            setText();
-            fillNationInfo();
-            getTotalPositiveVariation();
-        }
+        nationViewModel.getNationData().observe(getViewLifecycleOwner(), listResource -> {
+            List<Nation> nationData = listResource.getData();
+            if (nationData != null) {
+                Nation lastNationData = nationData.get(nationData.size() - 1);
+                setText(lastNationData);
+                fillNationInfo(lastNationData, nationData);
+            } else {
+                Snackbar.make(requireView(), "Impossibile scaricare i dati relativi alle nazioni"
+                        , BaseTransientBottomBar.LENGTH_LONG).show();
+                Log.d(TAG, "onViewCreated: Errore --> Code: " + listResource.getStatusCode() + " " +
+                        "Message: " + listResource.getStatusMessage());
+            }
+        });
     }
 
-    private void getNationDataFromServer() {
-        Log.i("Download","Download Nation data");
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(context);
-        String nationUrl = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json";
-
-        nationsData = new ArrayList<>();
-
-        // Request a string response from the provided URL.
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                (Request.Method.GET, nationUrl, null, response -> {
-                    for (int i = 0; i < response.length(); i++) {
-                        try {
-                            JSONObject object = response.getJSONObject(i);
-                            String data = object.getString("data");
-                            String stato = object.getString("stato");
-                            int ricoveratiConSintomi = object.getInt("ricoverati_con_sintomi");
-                            int terapiaIntensiva = object.getInt("terapia_intensiva");
-                            int totaleOspedalizzati = object.getInt("totale_ospedalizzati");
-                            int isolamentoDomiciliare = object.getInt("isolamento_domiciliare");
-                            int attualmentePositivi = object.getInt("totale_positivi");
-                            int nuoviPositivi = object.getInt("variazione_totale_positivi");
-                            int dimessi = object.getInt("dimessi_guariti");
-                            int deceduti = object.getInt("deceduti");
-                            int totaleCasi = object.getInt("totale_casi");
-                            int tamponi = object.getInt("tamponi");
-                            int totaleNuoviPositivi = object.getInt("nuovi_positivi");
-
-                            Nation nation = new Nation(data,stato,ricoveratiConSintomi,terapiaIntensiva,
-                                    totaleOspedalizzati,isolamentoDomiciliare,attualmentePositivi,
-                                    nuoviPositivi,dimessi,deceduti,totaleCasi,tamponi, totaleNuoviPositivi);
-
-                            nationsData.add(nation);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    lastNationData = nationsData.get(nationsData.size() - 1);
-
-                    setText();
-
-                    fillNationInfo();
-
-                    getTotalPositiveVariation();
-
-                    preferences.edit().putBoolean(MainActivity.DASH_KEY,true).apply();
-                }, error -> {
-                    Toast toast = Toast.makeText(context,"Impossibile scaricare i dati", Toast.LENGTH_SHORT);
-                    toast.show();
-                });
-
-        // Add the request to the RequestQueue.
-        queue.add(jsonArrayRequest);
+    private void setText(Nation lastNationData) {
+        binding.infectedText.setText(String.format(Locale.ITALIAN, "%d",
+                lastNationData.getAttualmentePositivi()));
+        binding.recoveredText.setText(String.format(Locale.ITALIAN, "%d", lastNationData.getDimessi()));
+        binding.deadText.setText(String.format(Locale.ITALIAN, "%d", lastNationData.getDeceduti()));
+        binding.dataText.setText("Dati aggiornati al: " + DateTimeUtil.getDataDate(lastNationData.getData()));
     }
 
-    private void setText() {
-        infectedText.setText(String.format(Locale.ITALIAN, "%d", lastNationData.getAttualmentePositivi()));
-        recoveredText.setText(String.format(Locale.ITALIAN, "%d", lastNationData.getDimessi()));
-        deadText.setText(String.format(Locale.ITALIAN, "%d", lastNationData.getDeceduti()));
-        String date = lastNationData.getData();
-        String day = date.substring(8,10);
-        String month = date.substring(5,7);
-        String year = date.substring(0,4);
-        dataText.setText(context.getString(R.string.data_name, day, month, year));
-    }
-
-    private void fillNationInfo() {
+    private void fillNationInfo(Nation lastNationData, List<Nation> nationsData) {
         Map<String, String> nationInfo = new LinkedHashMap<>();
 
         int totaleCasi = lastNationData.getTotaleCasi();
@@ -160,14 +82,14 @@ public class DashboardFragment extends Fragment {
         int tamponi = lastNationData.getTamponi();
         int totaleNuoviCasiPositivi = lastNationData.getTotaleNuoviPositivi();
 
-        Nation previousNationData = nationsData.get(nationsData.size()-2);
+        Nation previousNationData = nationsData.get(nationsData.size() - 2);
         int previousDeaths = previousNationData.getDeceduti();
         int previousRecovered = previousNationData.getDimessi();
 
         int variazioneDeceduti = deceduti - previousDeaths;
         int variazioneDimessi = dimessi - previousRecovered;
 
-        Nation oldNationData = nationsData.get(nationsData.size()-3);
+        Nation oldNationData = nationsData.get(nationsData.size() - 3);
 
         int varTotaleCasi = totaleCasi - previousNationData.getTotaleCasi();
         int varTotaleNuoviCasiPositivi = totaleNuoviCasiPositivi - previousNationData.getTotaleNuoviPositivi();
@@ -241,13 +163,6 @@ public class DashboardFragment extends Fragment {
         }
 
         HashMapAdapter hashMapAdapter = new HashMapAdapter(nationInfo);
-        nationListView.setAdapter(hashMapAdapter);
-    }
-
-    private void getTotalPositiveVariation() {
-        totalNewPositiveData = new ArrayList<>();
-        for (Nation nation: nationsData) {
-            totalNewPositiveData.add(nation.getTotaleNuoviPositivi());
-        }
+        binding.nationInfoList.setAdapter(hashMapAdapter);
     }
 }
