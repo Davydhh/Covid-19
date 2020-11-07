@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,84 +19,131 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/infettiCardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:gravity="center"
-            android:layout_weight="1"
-            android:background="@drawable/rectangle_red"
-            android:layout_margin="10dp">
+            android:clipToPadding="true"
+            app:cardCornerRadius="6dp"
+            app:cardUseCompatPadding="true"
+            android:elevation="16dp"
+            android:foreground="#40ff0000"
+            android:clickable="false"
+            android:layout_weight="1">
 
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="Infetti"
-               style="@style/TextViewStyleBold"
-               android:textColor="@color/red"/>
-
-            <TextView
-                android:id="@+id/infected_text"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextViewStyleNormal"
-                android:layout_marginTop="5dp" />
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_margin="10dp">
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Infetti"
+                    style="@style/TextViewStyleBold"
+                    android:textColor="@color/red"/>
 
-        <LinearLayout
+                <TextView
+                    android:id="@+id/infected_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextViewStyleNormal"
+                    android:layout_marginTop="5dp"
+                    tools:text="1000"
+                    android:layout_gravity="center_horizontal"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/guaritiCardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:gravity="center"
-            android:layout_weight="1"
-            android:background="@drawable/rectangle_green"
-            android:layout_margin="10dp">
+            android:clipToPadding="true"
+            app:cardCornerRadius="6dp"
+            app:cardUseCompatPadding="true"
+            android:elevation="16dp"
+            android:foreground="#40008000"
+            android:clickable="false"
+            android:layout_weight="1">
 
-            <TextView
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Guariti"
-                style="@style/TextViewStyleBold"
-                android:textColor="@color/green"/>
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_margin="10dp">
 
-            <TextView
-                android:id="@+id/recovered_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextViewStyleNormal"
-                android:layout_marginTop="5dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Guariti"
+                    style="@style/TextViewStyleBold"
+                    android:textColor="@color/green"/>
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/recovered_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextViewStyleNormal"
+                    android:layout_marginTop="5dp"
+                    tools:text="1000"
+                    android:layout_gravity="center_horizontal"/>
 
-        <LinearLayout
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/decedutiCardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:gravity="center"
-            android:layout_weight="1"
-            android:background="@drawable/rectangle_black"
-            android:layout_margin="10dp">
+            android:clipToPadding="true"
+            app:cardCornerRadius="6dp"
+            app:cardUseCompatPadding="true"
+            android:elevation="16dp"
+            android:foreground="#40000000"
+            android:clickable="false"
+            android:layout_weight="1">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Deceduti"
-                style="@style/TextViewStyleBold"
-                android:textColor="@color/black"/>
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_margin="10dp">
 
-            <TextView
-                android:id="@+id/dead_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextViewStyleNormal"
-                android:layout_marginTop="5dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deceduti"
+                    style="@style/TextViewStyleBold"
+                    android:textColor="@color/black"/>
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/dead_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextViewStyleNormal"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center_horizontal"
+                    tools:text="1000"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
+
 
     <ListView
         android:id="@+id/nation_info_list"
