@@ -151,9 +151,9 @@ public class DashboardFragment extends Fragment {
         }
 
         if (varIsolamentoDom > 0) {
-            nationInfo.put("Isolamento domiciliare", isolamentoDomiciliare + " (+" + varIsolamentoDom + ')');
+            nationInfo.put("Isolamento", isolamentoDomiciliare + " (+" + varIsolamentoDom + ')');
         } else {
-            nationInfo.put("Isolamento domiciliare", isolamentoDomiciliare + " (" + varIsolamentoDom + ')');
+            nationInfo.put("Isolamento", isolamentoDomiciliare + " (" + varIsolamentoDom + ')');
         }
 
         if (varTamponi > 0) {

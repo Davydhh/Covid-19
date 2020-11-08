@@ -16,6 +16,8 @@
         android:layout_height="wrap_content"
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp"
-        android:layout_margin="20dp"/>
+        android:layout_margin="20dp"
+        android:scrollbars="none"
+        android:listSelector="@android:color/transparent"/>
 
 </LinearLayout>

@@ -48,6 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Infetti"
+                    android:layout_gravity="center_horizontal"
                     style="@style/TextViewStyleBold"
                     android:textColor="@color/red"/>
 
@@ -154,6 +155,8 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginBottom="5dp"
+        android:scrollbars="none"
+        android:listSelector="@android:color/transparent"/>
 
 </LinearLayout>
