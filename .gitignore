@@ -154,6 +154,8 @@ Temporary Items
 # http://www.sonarlint.org/commandline/
 # SonarLint working directories, configuration files (including credentials)
 .sonarlint/
+.idea/sonarlint
+.idea/sonarlint/issuestore
 
 ### Windows ###
 # Windows thumbnail cache files

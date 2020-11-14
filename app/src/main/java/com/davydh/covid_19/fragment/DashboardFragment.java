@@ -162,7 +162,7 @@ public class DashboardFragment extends Fragment {
             nationInfo.put("Tamponi", tamponi + " (" + varTamponi + ')');
         }
 
-        HashMapAdapter hashMapAdapter = new HashMapAdapter(nationInfo);
+        HashMapAdapter hashMapAdapter = new HashMapAdapter(nationInfo, requireContext());
         binding.nationInfoList.setAdapter(hashMapAdapter);
     }
 }

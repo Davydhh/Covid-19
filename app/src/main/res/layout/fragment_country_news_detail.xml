@@ -24,6 +24,7 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
         style="@style/TextViewStyleBold"
+        android:textColor="@color/white"
         android:layout_marginBottom="8dp"/>
 
     <ImageView
@@ -41,7 +42,7 @@
         tools:text="Contenuto"
         android:layout_gravity="center_horizontal"
         android:layout_margin="8dp"
-        android:textColor="@android:color/secondary_text_light"/>
+        android:textColor="@android:color/darker_gray"/>
 
     <TextView
         android:id="@+id/linkArticle"

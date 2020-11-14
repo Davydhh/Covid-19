@@ -195,10 +195,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 case 3:
                 case 1:
                 case 2:
+                case 21:
+                case 15:
+                case 9:
                     marker.setIcon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_coronavirus_red));
                     break;
+                case 13:
+                case 17:
+                case 8:
+                case 6:
+                case 11:
+                case 7:
                 case 16:
                 case 19:
+                case 10:
                     marker.setIcon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_coronavirus_orange));
                     break;
                 default:

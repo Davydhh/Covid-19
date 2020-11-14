@@ -1,5 +1,6 @@
 package com.davydh.covid_19.adapter;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -8,7 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
+
+import androidx.core.content.res.ResourcesCompat;
 
 import com.davydh.covid_19.R;
 
@@ -17,10 +19,12 @@ import java.util.Map;
 
 public class HashMapAdapter extends BaseAdapter {
     private final ArrayList mData;
+    private final Context mContext;
 
-    public HashMapAdapter(Map<String, String> map) {
+    public HashMapAdapter(Map<String, String> map, Context context) {
         mData = new ArrayList();
         mData.addAll(map.entrySet());
+        this.mContext = context;
     }
 
     @Override
@@ -66,8 +70,11 @@ public class HashMapAdapter extends BaseAdapter {
 
         SpannableString str = new SpannableString(value);
 
-        ForegroundColorSpan fcsRed = new ForegroundColorSpan(Color.RED);
-        ForegroundColorSpan fcsGreen = new ForegroundColorSpan(Color.parseColor("#008000"));
+        ForegroundColorSpan fcsRed =
+                new ForegroundColorSpan(ResourcesCompat.getColor(mContext.getResources(),
+                        R.color.redText, null));
+        ForegroundColorSpan fcsGreen = new ForegroundColorSpan(ResourcesCompat.getColor(mContext.getResources(),
+                R.color.greenText, null));
 
         if (key.contains("guariti")) {
             if (value.contains("+")) {
