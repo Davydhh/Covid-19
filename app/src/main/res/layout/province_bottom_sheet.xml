@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/darkBackground"
     app:behavior_hideable="true"
     android:paddingBottom="56dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">

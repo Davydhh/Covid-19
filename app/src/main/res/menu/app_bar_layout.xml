@@ -3,6 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/app_bar_item"
-        android:title="Info" />
+        android:id="@+id/dark_mode_item"
+        android:title="Dark Mode"
+        android:icon="@drawable/ic_baseline_invert_colors_24"
+        app:showAsAction="ifRoom|withText"/>
+
+    <item
+        android:id="@+id/info_item"
+        android:title="Info"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_info_24"/>
 </menu>

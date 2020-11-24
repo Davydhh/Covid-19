@@ -2,6 +2,7 @@ package com.davydh.covid_19.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,6 +21,8 @@ import com.davydh.covid_19.fragment.MapFragment;
 import com.davydh.covid_19.fragment.StatsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String PREFS_KEY = "Prefs";
     public static final String DASH_KEY = "DashKey";
     public static final String MAP_KEY = "MapKey";
+    public static final String DARK_MODE_KEY = "DarkMode";
     public static SharedPreferences preferences;
 
     private BottomNavigationView bottomNavigation;
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private DashboardFragment dashboardFragment;
     private MapFragment mapFragment;
     private static FragmentTransaction ft;
+    private boolean darkMode;
 
     private static BottomSheetBehavior sheetBehavior;
 
@@ -45,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
         preferences = getSharedPreferences(PREFS_KEY,0);
         preferences.edit().putBoolean(DASH_KEY,false).apply();
         preferences.edit().putBoolean(MAP_KEY,false).apply();
+
+        darkMode = preferences.getBoolean(DARK_MODE_KEY, false);
+        if (darkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
 
         LinearLayout bottomSheet = findViewById(R.id.province_bottom_sheet);
         sheetBehavior = BottomSheetBehavior.from(bottomSheet);
@@ -114,9 +126,17 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.app_bar_item) {
+        if (id == R.id.info_item) {
             InfoBottomSheetDialog infoBottomSheetDialog = new InfoBottomSheetDialog();
             infoBottomSheetDialog.show(getSupportFragmentManager(),"InfoBottomSheetDialog");
+        } else if (id == R.id.dark_mode_item) {
+            if (darkMode) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                preferences.edit().putBoolean(DARK_MODE_KEY, false).apply();
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                preferences.edit().putBoolean(DARK_MODE_KEY, true).apply();
+            }
         }
 
         return super.onOptionsItemSelected(item);

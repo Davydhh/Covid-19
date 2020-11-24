@@ -24,7 +24,7 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
         style="@style/TextViewStyleBold"
-        android:textColor="@color/white"
+        android:textColor="@color/normalText"
         android:layout_marginBottom="8dp"/>
 
     <ImageView

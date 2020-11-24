@@ -68,14 +68,8 @@ h
 8app/src/main/res/drawable-v24/ic_launcher_background.xml,7\2\72a5201a83194a277936d335e166058d782e5618
 m
 =app/src/main/res/drawable-v24/ic_notifications_black_24dp.xml,f\7\f7987137637e5329245bdafb6e218467d8b3d881
-]
--app/src/main/res/layout/country_news_item.xml,3\7\374ec77a9f7528255492dbd94192d948f4fd2a5d
-a
-1app/src/main/res/layout/fragment_country_news.xml,f\3\f3da8b85a7cf6881cda6e9e5089adb5e97a31df3
 X
 (app/src/main/res/layout/loading_item.xml,e\c\ec0f9f6d6099eafc4d3b58811d56081d604bd953
-b
-2app/src/main/res/menu/bottom_navigation_layout.xml,5\1\5142bd77f5ab766169a6c8269689e77a914e2aaa
 Y
 )app/src/main/res/navigation/nav_graph.xml,b\a\baffce053da291d96fb575a09f2bbe9aaa9c4be9
 i

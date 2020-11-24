@@ -21,7 +21,7 @@
         android:padding="15dp"
         android:focusable="false"
         android:clickable="false"
-        android:background="@color/colorPrimary">
+        android:background="@color/standardBackground">
 
         <TextView
             android:id="@+id/text_list_item"
@@ -30,7 +30,7 @@
             android:text="Nuovi positivi:"
             android:textSize="12sp"
             android:layout_alignParentStart="true"
-            android:textColor="@color/white"/>
+            android:textColor="@color/normalText"/>
 
         <TextView
             android:id="@+id/number_list_item"
@@ -39,7 +39,7 @@
             android:text="2000"
             android:textSize="12sp"
             android:layout_alignParentEnd="true"
-            android:textColor="@color/white"/>
+            android:textColor="@color/normalText"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

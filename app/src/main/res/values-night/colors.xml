@@ -3,16 +3,16 @@
     <color name="colorPrimary">#3f6272</color>
     <color name="colorPrimaryDark">#123847</color>
     <color name="colorAccent">#6c8fa1</color>
-    <color name="standardBackground">@color/white</color>
-    <color name="darkBackground">@color/white</color>
-    <color name="lightBackground">@color/white</color>
+    <color name="standardBackground">#3f6272</color>
+    <color name="darkBackground">#123847</color>
+    <color name="lightBackground">#6c8fa1</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="red">#ff0000</color>
     <color name="green">#008000</color>
     <color name="orange">#FFA500</color>
     <color name="yellow">#EAEA35</color>
-    <color name="greenText">@color/green</color>
-    <color name="redText">@color/red</color>
-    <color name="normalText">@color/black</color>
+    <color name="greenText">#77996b</color>
+    <color name="redText">#cc6060</color>
+    <color name="normalText">@color/white</color>
 </resources>
