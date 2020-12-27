@@ -81,6 +81,8 @@ public class DashboardFragment extends Fragment {
         int isolamentoDomiciliare = lastNationData.getIsolamentoDomiciliare();
         int tamponi = lastNationData.getTamponi();
         int totaleNuoviCasiPositivi = lastNationData.getTotaleNuoviPositivi();
+        int ingressiTerapiaIntensiva = lastNationData.getIngressiTerapiaIntensiva();
+        int casiTestati = lastNationData.getCasiTestati();
 
         Nation previousNationData = nationsData.get(nationsData.size() - 2);
         int previousDeaths = previousNationData.getDeceduti();
@@ -101,6 +103,9 @@ public class DashboardFragment extends Fragment {
         int varRicoverati = ricoverati - previousNationData.getRicoveratiConSintomi();
         int varIsolamentoDom = isolamentoDomiciliare - previousNationData.getIsolamentoDomiciliare();
         int varTamponi = tamponi - previousNationData.getTamponi();
+        int varIngressiTerapiaIntensiva =
+                ingressiTerapiaIntensiva - previousNationData.getIngressiTerapiaIntensiva();
+        int varCasiTestati = casiTestati - previousNationData.getCasiTestati();
 
         if (varTotaleCasi > 0) {
             nationInfo.put("Totale casi",totaleCasi + " (+" + varTotaleCasi + ')');
@@ -160,6 +165,20 @@ public class DashboardFragment extends Fragment {
             nationInfo.put("Tamponi", tamponi + " (+" + varTamponi + ')');
         } else {
             nationInfo.put("Tamponi", tamponi + " (" + varTamponi + ')');
+        }
+
+        if (varIngressiTerapiaIntensiva > 0) {
+            nationInfo.put("Ingressi terapia intensiva",
+                    ingressiTerapiaIntensiva + " (+" + varIngressiTerapiaIntensiva + ')');
+        } else {
+            nationInfo.put("Ingressi terapia intensiva",
+                    ingressiTerapiaIntensiva + " (" + varIngressiTerapiaIntensiva + ')');
+        }
+
+        if (varCasiTestati > 0) {
+            nationInfo.put("Casi testati", casiTestati + " (+" + varCasiTestati + ')');
+        } else {
+            nationInfo.put("Casi testati", casiTestati + " (" + varCasiTestati + ')');
         }
 
         HashMapAdapter hashMapAdapter = new HashMapAdapter(nationInfo, requireContext());

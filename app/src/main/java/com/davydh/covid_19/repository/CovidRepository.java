@@ -11,6 +11,7 @@ import com.davydh.covid_19.model.Resource;
 import com.davydh.covid_19.service.CovidService;
 import com.davydh.covid_19.utils.Constants;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
@@ -71,10 +72,27 @@ public class CovidRepository {
                         int totaleCasi = object.get("totale_casi").getAsInt();
                         int tamponi = object.get("tamponi").getAsInt();
                         int totaleNuoviPositivi = object.get("nuovi_positivi").getAsInt();
+                        JsonElement ingressiTerapiaIntensivaObj = object.get(
+                                "ingressi_terapia_intensiva");
+                        int ingressiTerapiaIntensiva;
+                        if (!ingressiTerapiaIntensivaObj.isJsonNull()) {
+                            ingressiTerapiaIntensiva = ingressiTerapiaIntensivaObj.getAsInt();
+                        } else {
+                            ingressiTerapiaIntensiva = 0;
+                        }
+
+                        JsonElement casiTestatiObj = object.get("casi_testati");
+                        int casiTestati;
+                        if (!casiTestatiObj.isJsonNull()) {
+                            casiTestati = casiTestatiObj.getAsInt();
+                        } else {
+                            casiTestati = 0;
+                        }
 
                         Nation nation = new Nation(data,stato,ricoveratiConSintomi,terapiaIntensiva,
                                 totaleOspedalizzati,isolamentoDomiciliare,attualmentePositivi,
-                                nuoviPositivi,dimessi,deceduti,totaleCasi,tamponi, totaleNuoviPositivi);
+                                nuoviPositivi,dimessi,deceduti,totaleCasi,tamponi,
+                                totaleNuoviPositivi, ingressiTerapiaIntensiva, casiTestati);
 
                         nationList.add(nation);
                         resource.setData(nationList);

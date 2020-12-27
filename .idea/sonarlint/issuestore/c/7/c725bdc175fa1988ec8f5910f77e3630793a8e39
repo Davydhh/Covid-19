@@ -1,7 +1,7 @@
 
-£
-java:S1186!"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ı˜«ñøÿÿÿÿ8§³îÚ.
 €
 java:S1450"^Remove the "nationViewModel" field and declare it as a local variable in the relevant methods.(È¥™øÿÿÿÿ8§³îÚ.
 m
-java:S3776G"RRefactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.(î±*8§³îÚ.
+java:S3776G"RRefactor this method to reduce its Cognitive Complexity from 24 to the 15 allowed.(î±*8§³îÚ.
+£
+java:S1186!"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ı˜«ñøÿÿÿÿ8§³îÚ.

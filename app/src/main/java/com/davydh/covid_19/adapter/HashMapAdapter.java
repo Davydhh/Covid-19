@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,9 +89,10 @@ public class HashMapAdapter extends BaseAdapter {
             if (value.contains("+")) {
                 int charPosition = value.indexOf('+');
                 str.setSpan(fcsRed,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            } else {
+            } else if (value.contains("-")) {
                 int charPosition = value.lastIndexOf('-');
-                str.setSpan(fcsGreen,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                str.setSpan(fcsGreen, charPosition,value.length()-1,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
 
