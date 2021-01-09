@@ -1,6 +1,9 @@
 package com.davydh.covid_19.model;
 
-public class Nation {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Nation implements Parcelable {
     private String data;
     private String stato;
     private int ricoveratiConSintomi;
@@ -113,4 +116,59 @@ public class Nation {
                 ", tamponi=" + tamponi +
                 '}';
     }
+
+    protected Nation(Parcel in) {
+        data = in.readString();
+        stato = in.readString();
+        ricoveratiConSintomi = in.readInt();
+        terapiaIntensiva = in.readInt();
+        totaleOspedalizzati = in.readInt();
+        isolamentoDomiciliare = in.readInt();
+        attualmentePositivi = in.readInt();
+        nuoviPositivi = in.readInt();
+        dimessi = in.readInt();
+        deceduti = in.readInt();
+        totaleCasi = in.readInt();
+        tamponi = in.readInt();
+        totaleNuoviPositivi = in.readInt();
+        ingressiTerapiaIntensiva = in.readInt();
+        casiTestati = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(data);
+        dest.writeString(stato);
+        dest.writeInt(ricoveratiConSintomi);
+        dest.writeInt(terapiaIntensiva);
+        dest.writeInt(totaleOspedalizzati);
+        dest.writeInt(isolamentoDomiciliare);
+        dest.writeInt(attualmentePositivi);
+        dest.writeInt(nuoviPositivi);
+        dest.writeInt(dimessi);
+        dest.writeInt(deceduti);
+        dest.writeInt(totaleCasi);
+        dest.writeInt(tamponi);
+        dest.writeInt(totaleNuoviPositivi);
+        dest.writeInt(ingressiTerapiaIntensiva);
+        dest.writeInt(casiTestati);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Nation> CREATOR = new Parcelable.Creator<Nation>() {
+        @Override
+        public Nation createFromParcel(Parcel in) {
+            return new Nation(in);
+        }
+
+        @Override
+        public Nation[] newArray(int size) {
+            return new Nation[size];
+        }
+    };
 }

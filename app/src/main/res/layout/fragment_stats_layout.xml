@@ -1,54 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
     android:gravity="center"
     android:background="@color/white">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Andamento nazionale"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        android:textStyle="bold"/>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/ViewPagerRanking"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </androidx.viewpager2.widget.ViewPager2>
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/nation_chart"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabDots"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Andamento nazionale nuovi casi positivi"
-        android:textSize="12sp"
-        android:layout_marginTop="15dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"/>
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/new_recovered_chart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.8" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Andamento percentuale contagi"
-        android:textSize="12sp"
-        android:layout_marginTop="15dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"/>
-
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/contagions_percentage_chart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5" />
-
+        app:tabBackground="@drawable/tab_selector"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"
+        app:tabIndicatorColor="@android:color/transparent"
+        app:tabRippleColor="@android:color/transparent">
+    </com.google.android.material.tabs.TabLayout>
 </LinearLayout>
