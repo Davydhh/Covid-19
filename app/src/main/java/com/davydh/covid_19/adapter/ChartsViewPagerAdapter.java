@@ -8,10 +8,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewPagerAdapter extends FragmentStateAdapter {
+public class ChartsViewPagerAdapter extends FragmentStateAdapter {
     private final List<Fragment> mFragmentList = new ArrayList<>();
 
-    public ViewPagerAdapter(@NonNull FragmentActivity fragment) {
+    public ChartsViewPagerAdapter(@NonNull FragmentActivity fragment) {
         super(fragment);
     }
 

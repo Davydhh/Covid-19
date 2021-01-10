@@ -70,8 +70,6 @@ m
 =app/src/main/res/drawable-v24/ic_notifications_black_24dp.xml,f\7\f7987137637e5329245bdafb6e218467d8b3d881
 X
 (app/src/main/res/layout/loading_item.xml,e\c\ec0f9f6d6099eafc4d3b58811d56081d604bd953
-Y
-)app/src/main/res/navigation/nav_graph.xml,b\a\baffce053da291d96fb575a09f2bbe9aaa9c4be9
 i
 9app/src/main/java/com/davydh/covid_19/model/Province.java,3\c\3c2305c0eb3e564e36ad25f9003fc27e5fc0b51a
 u
@@ -88,3 +86,11 @@ b
 2app/src/main/res/drawable/ic_coronavirus_green.xml,9\b\9b060342319b93932f1a5413dfcaca1ac1efacac
 h
 8app/src/main/res/drawable/ic_coronavirus_green_small.xml,8\f\8ff85588ec0e9ace4023d6e625c946927c0347c9
+s
+Capp/src/main/java/com/davydh/covid_19/adapter/ViewPagerAdapter.java,2\7\27c0b67188b77dc47689db913c8a8566ba250570
+}
+Mapp/src/main/java/com/davydh/covid_19/fragment/NewPositivesChartFragment.java,9\e\9e626f6d72fafe67e98b58b6eecc3df5f7fdb945
+{
+Kapp/src/main/java/com/davydh/covid_19/fragment/ContagionsChartFragment.java,4\1\41576ff3cca0147bd88c36e97fd97965712d7723
+w
+Gapp/src/main/java/com/davydh/covid_19/fragment/NationChartFragment.java,8\6\86bef91c6740d4144df34efa6a9060370d7ab680

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:scrollbars="none"
+    tools:context=".fragment.VaccinesFragment"
+    android:background="@color/darkBackground">
+
+    <LinearLayout
+        android:id="@+id/vaccinesLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/vaccinesDataText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="@android:color/darker_gray"
+            tools:text="Dati aggiornati al: 01-01-2000 00:00"
+            android:layout_gravity="center"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/vaccinesCardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:clipToPadding="true"
+            app:cardCornerRadius="6dp"
+            app:cardUseCompatPadding="true"
+            android:elevation="16dp"
+            android:foreground="#50f8cce2"
+            android:clickable="false"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+            <LinearLayout
+                android:id="@+id/vaccinatedLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:paddingHorizontal="20dp">
+
+                <TextView
+                    android:id="@+id/vaccinatedTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vaccinati"
+                    android:layout_gravity="center_horizontal"
+                    style="@style/TextViewStyleBold"
+                    android:textColor="#e32788"/>
+
+                <TextView
+                    android:id="@+id/totalVaccinatedTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextViewStyleNormal"
+                    android:layout_marginTop="5dp"
+                    tools:text="500000"
+                    android:layout_gravity="center_horizontal"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <ir.androidexception.datatable.DataTable
+            android:id="@+id/data_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:header_gravity="center"
+            app:row_gravity="center"
+            app:header_vertical_padding="16dp"
+            app:header_horizontal_padding="0dp"
+            app:row_vertical_padding="16dp"
+            app:header_text_size="11sp"
+            app:row_text_size="9sp"
+            app:row_text_color="#000"
+            app:header_text_color="#000"
+            app:row_background_color="#fff"
+            app:header_background_color="#fff"
+            app:persian_number="false"
+            app:corner_radius="8dp"
+            app:direction="ltr"
+            app:shadow="8dp"/>
+    </LinearLayout>
+
+</ScrollView>

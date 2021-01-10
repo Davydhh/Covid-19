@@ -14,15 +14,14 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.davydh.covid_19.R;
-import com.davydh.covid_19.fragment.NewsFragment;
 import com.davydh.covid_19.fragment.DashboardFragment;
+import com.davydh.covid_19.fragment.NewsFragment;
+import com.davydh.covid_19.fragment.CovidFragment;
 import com.davydh.covid_19.fragment.InfoBottomSheetDialog;
 import com.davydh.covid_19.fragment.MapFragment;
 import com.davydh.covid_19.fragment.StatsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -66,9 +65,6 @@ public class MainActivity extends AppCompatActivity {
         mapFragment = new MapFragment();
 
         fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, dashboardFragment);
-        fragmentTransaction.commit();
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
 

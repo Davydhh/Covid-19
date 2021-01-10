@@ -92,7 +92,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         RegionViewModel regionViewModel = new ViewModelProvider(requireActivity()).get(RegionViewModel.class);
-        regionViewModel.getLastRegionData().observe(getViewLifecycleOwner(), listResource -> {
+        regionViewModel.getLastCovidRegionData().observe(getViewLifecycleOwner(), listResource -> {
             List<Region> lastRegionData = listResource.getData();
             if (lastRegionData != null && !lastRegionData.isEmpty()) {
                 createMarkers(lastRegionData);

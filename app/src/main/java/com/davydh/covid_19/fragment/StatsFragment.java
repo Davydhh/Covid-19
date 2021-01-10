@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.davydh.covid_19.adapter.ViewPagerAdapter;
+import com.davydh.covid_19.adapter.ChartsViewPagerAdapter;
 import com.davydh.covid_19.databinding.FragmentStatsLayoutBinding;
 import com.davydh.covid_19.model.Nation;
 import com.davydh.covid_19.viewmodel.NationViewModel;
@@ -48,12 +48,12 @@ public class StatsFragment extends Fragment {
             totalNewPositiveData.add(nation.getTotaleNuoviPositivi());
         }
 
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(requireActivity());
-        viewPagerAdapter.addFragment(NationChartFragment.newInstance(nationsData));
-        viewPagerAdapter.addFragment(NewPositivesChartFragment.newInstance(totalNewPositiveData));
-        viewPagerAdapter.addFragment(ContagionsChartFragment.newInstance(nationsData));
+        ChartsViewPagerAdapter chartsViewPagerAdapter = new ChartsViewPagerAdapter(requireActivity());
+        chartsViewPagerAdapter.addFragment(NationChartFragment.newInstance(nationsData));
+        chartsViewPagerAdapter.addFragment(NewPositivesChartFragment.newInstance(totalNewPositiveData));
+        chartsViewPagerAdapter.addFragment(ContagionsChartFragment.newInstance(nationsData));
 
-        mViewPager2.setAdapter(viewPagerAdapter);
+        mViewPager2.setAdapter(chartsViewPagerAdapter);
 
         new TabLayoutMediator(binding.tabDots, mViewPager2,
                 (tab, position) -> mViewPager2.setCurrentItem(tab.getPosition(), true)

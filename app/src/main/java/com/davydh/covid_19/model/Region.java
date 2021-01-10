@@ -1,6 +1,7 @@
 package com.davydh.covid_19.model;
 
 public class Region {
+    //Covid Data
     private String data;
     private String stato;
     private int codice;
@@ -19,6 +20,19 @@ public class Region {
     private int tamponi;
     private String note;
     private int totaleNuoviPositivi;
+
+    //Vaccines Data
+    private String area;
+    private int dosiSomministrate;
+    private int dosiConsegnate;
+    private double percentualeSomministrazione;
+
+    public Region(String area, int dosiSomministrate, int dosiCOnsegnate, double percentualeSomministrazione) {
+        this.area = area;
+        this.dosiSomministrate = dosiSomministrate;
+        this.dosiConsegnate = dosiCOnsegnate;
+        this.percentualeSomministrazione = percentualeSomministrazione;
+    }
 
     public Region(String data, String stato, int codice, String nome, double latitude, double longitude,
                   int ricoveratiConSintomi, int terapiaIntensiva, int totaleOspedalizzati,
@@ -114,6 +128,26 @@ public class Region {
 
     public int getTotaleNuoviPositivi() {
         return totaleNuoviPositivi;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public int getDosiSomministrate() {
+        return dosiSomministrate;
+    }
+
+    public int getDosiConsegnate() {
+        return dosiConsegnate;
+    }
+
+    public double getPercentualeSomministrazione() {
+        return percentualeSomministrazione;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     @Override
