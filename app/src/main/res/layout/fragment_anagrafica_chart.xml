@@ -8,17 +8,17 @@
     android:background="@color/white">
 
     <TextView
-        android:id="@+id/andamentoPercentualeTextView"
+        android:id="@+id/anagraficaVacciniTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Andamento percentuale contagi"
+        android:text="Anagrafica vaccini"
         android:textSize="12sp"
         android:layout_marginTop="15dp"
         android:textColor="@color/black"
         android:textStyle="bold"/>
 
     <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/contagions_percentage_chart"
+        android:id="@+id/anagrafica_vaccini_chart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

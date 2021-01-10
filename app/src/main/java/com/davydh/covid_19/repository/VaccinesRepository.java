@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.davydh.covid_19.model.AnagraficaVaccini;
 import com.davydh.covid_19.model.Region;
 import com.davydh.covid_19.model.Resource;
 import com.davydh.covid_19.service.VaccinesService;
@@ -65,8 +66,9 @@ public class VaccinesRepository {
 
                         regionList.add(new Region(area, dosiSomministrate, dosiConsegnate,
                                 percentualeSomministrazione));
-                        resource.setData(regionList);
                     }
+
+                    resource.setData(regionList);
                 } else {
                     try {
                         assert response.errorBody() != null;
@@ -122,6 +124,49 @@ public class VaccinesRepository {
                 Resource<String> resource = new Resource<>();
                 resource.setStatusMessage(t.getMessage());
                 lastUpdateResource.setValue(resource);
+            }
+        });
+    }
+
+    public void getAnagraficaSummaryLatest(MutableLiveData<Resource<List<AnagraficaVaccini>>> anagraficaResource) {
+        Call<JsonObject> call = vaccinesService.getAnagraficaSummaryLatest();
+
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NotNull Call<JsonObject> call, @NotNull Response<JsonObject> response) {
+                Resource<List<AnagraficaVaccini>> resource = new Resource<>();
+
+                if (response.isSuccessful() && response.body() != null) {
+                    JsonArray data = response.body().getAsJsonArray("data");
+                    List<AnagraficaVaccini> list =new ArrayList<>();
+                    for (int i = 0; i < data.size(); i++) {
+                        JsonObject object = data.get(i).getAsJsonObject();
+                        String fasciaAnagrafica = object.get("fascia_anagrafica").getAsString();
+                        int totale = object.get("totale").getAsInt();
+                        list.add(new AnagraficaVaccini(fasciaAnagrafica, totale));
+                    }
+
+                    resource.setData(list);
+                } else {
+                    try {
+                        assert response.errorBody() != null;
+                        Log.d(TAG, "onResponse: Errore --> " + response.errorBody().string());
+                        resource.setStatusCode(response.code());
+                        resource.setStatusMessage(response.message());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                anagraficaResource.postValue(resource);
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
+                Log.d(TAG, "onFailure: Errore --> ", t);
+                Resource<List<AnagraficaVaccini>> resource = new Resource<>();
+                resource.setStatusMessage(t.getMessage());
+                anagraficaResource.postValue(resource);
             }
         });
     }

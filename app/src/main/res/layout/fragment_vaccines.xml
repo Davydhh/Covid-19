@@ -54,7 +54,7 @@
                     android:text="Vaccinati"
                     android:layout_gravity="center_horizontal"
                     style="@style/TextViewStyleBold"
-                    android:textColor="#e32788"/>
+                    android:textColor="@color/vaccini"/>
 
                 <TextView
                     android:id="@+id/totalVaccinatedTextView"

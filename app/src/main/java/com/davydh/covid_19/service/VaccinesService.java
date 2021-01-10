@@ -11,4 +11,7 @@ public interface VaccinesService {
 
     @GET("last-update-dataset.json")
     Call<JsonObject> getLastUpdate();
+
+    @GET("anagrafica-vaccini-summary-latest.json")
+    Call<JsonObject> getAnagraficaSummaryLatest();
 }

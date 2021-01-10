@@ -3,4 +3,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="yellow_legend">&#160;&lt; 5.000</string>
     <string name="last_update">Dati aggiornati al: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

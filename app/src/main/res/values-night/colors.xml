@@ -15,4 +15,5 @@
     <color name="greenText">#77996b</color>
     <color name="redText">#cc6060</color>
     <color name="normalText">@color/white</color>
+    <color name="vaccini">#e32788</color>
 </resources>
