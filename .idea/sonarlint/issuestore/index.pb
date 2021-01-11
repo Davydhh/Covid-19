@@ -86,8 +86,6 @@ b
 2app/src/main/res/drawable/ic_coronavirus_green.xml,9\b\9b060342319b93932f1a5413dfcaca1ac1efacac
 h
 8app/src/main/res/drawable/ic_coronavirus_green_small.xml,8\f\8ff85588ec0e9ace4023d6e625c946927c0347c9
-s
-Capp/src/main/java/com/davydh/covid_19/adapter/ViewPagerAdapter.java,2\7\27c0b67188b77dc47689db913c8a8566ba250570
 }
 Mapp/src/main/java/com/davydh/covid_19/fragment/NewPositivesChartFragment.java,9\e\9e626f6d72fafe67e98b58b6eecc3df5f7fdb945
 {
