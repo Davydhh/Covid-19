@@ -16,8 +16,16 @@ import java.util.List;
 public class RegionViewModel extends ViewModel {
     private static final String TAG = RegionViewModel.class.getSimpleName();
 
+    private MutableLiveData<Resource<List<Region>>> covidRegionData;
     private MutableLiveData<Resource<List<Region>>> lastCovidRegionData;
     private MutableLiveData<Resource<List<Region>>> lastVaccinesRegionData;
+
+    public LiveData<Resource<List<Region>>> getCovidRegionData(String regione) {
+        covidRegionData = new MutableLiveData<>();
+        Log.d(TAG, "getCovidRegionData: Download the nation data from Internet");
+        CovidRepository.getInstance().getRegionData(regione, covidRegionData);
+        return covidRegionData;
+    }
 
     public LiveData<Resource<List<Region>>> getLastCovidRegionData() {
         if (lastCovidRegionData == null) {

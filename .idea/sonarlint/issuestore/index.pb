@@ -116,3 +116,5 @@ Oapp/src/main/java/com/davydh/covid_19/viewmodel/AnagraficaVacciniViewModel.java
 Kapp/src/main/java/com/davydh/covid_19/fragment/AnagraficaChartFragment.java,0\7\07b39677cd6decb5f93da3a2130180c21b436de4
 x
 Happ/src/main/java/com/davydh/covid_19/viewmodel/LastUpdateViewModel.java,7\b\7b7569cd48818fc587d40b3e34eda9769737e620
+x
+Happ/src/main/java/com/davydh/covid_19/fragment/RegionDetailFragment.java,2\b\2b5494f8b4f504de012545183bd421804f43649e

@@ -104,39 +104,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             }
         });
 
-        ProvinceViewModel provinceViewModel = new ViewModelProvider(requireActivity()).get(ProvinceViewModel.class);
-        provinceViewModel.getLastProvinceData().observe(getViewLifecycleOwner(), listResource -> {
-            List<Province> provinceData = listResource.getData();
-            if (provinceData != null && !provinceData.isEmpty()) {
-                mMap.setOnInfoWindowClickListener(this);
-                this.provincesData = provinceData;
-            } else {
-                Log.d(TAG,
-                        "fillProvinceInfo: Errore --> Code: " + listResource.getStatusCode() + " " +
-                                "Message: " + listResource.getStatusMessage());
-                Snackbar.make(requireView(), "Impossibile scaricare i dati relativi alle regioni"
-                        , BaseTransientBottomBar.LENGTH_LONG);
-            }
-        });
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        provincesListView = requireActivity().findViewById(R.id.province_list_view);
-
-        provincesListView.setOnTouchListener((v, event) -> {
-            int action = event.getAction();
-            if (action == MotionEvent.ACTION_DOWN) {
-                v.getParent().requestDisallowInterceptTouchEvent(true);
-            } else if (action == MotionEvent.ACTION_UP) {
-                v.getParent().requestDisallowInterceptTouchEvent(false);
-            }
-
-            v.onTouchEvent(event);
-            return true;
-        });
+        mMap.setOnInfoWindowClickListener(this);
     }
 
     @Override
@@ -191,43 +159,45 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             int codiceRegione = region.getCodice();
 
             switch (codiceRegione) {
+                case 3:
+                case 1:
                 case 13:
+                case 15:
+                case 8:
+                case 11:
+                case 9:
+                case 21:
+                case 22:
+                case 10:
                     marker.setIcon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_coronavirus_orange));
                     break;
-                default:
+                case 17:
+                case 14:
+                    marker.setIcon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_coronavirus_red));
+                    break;
+                case 18:
+                case 6:
+                case 12:
+                case 7:
+                case 16:
+                case 19:
+                case 2:
+                case 5:
                     marker.setIcon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_coronavirus_yellow));
+                    break;
+                default:
+                    marker.setIcon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_coronavirus_white));
             }
         }
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        MainActivity.setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
-        fillProvinceInfo((String) marker.getTag());
-    }
-
-    private void fillProvinceInfo(String regionName) {
-        Map<String, Integer> provinceInfo = new HashMap<>();
-        for (int i = 0; i < provincesData.size(); i++) {
-            Province province = provincesData.get(i);
-            if (province.getNomeRegione().equalsIgnoreCase(regionName)) {
-                provinceInfo.put(province.getNomeProvincia(), province.getTotaleCasi());
-            }
-        }
-
-        if (android.os.Build.VERSION.SDK_INT <= 23){
-            Map<String,Integer> sortedMap = sortByComparator(provinceInfo,false);
-            IntHashMapAdapter hashMapAdapter = new IntHashMapAdapter(sortedMap);
-            provincesListView.setAdapter(hashMapAdapter);
-        } else{
-            LinkedHashMap<String,Integer> sortedMap = new LinkedHashMap<>();
-            provinceInfo.entrySet()
-                    .stream()
-                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
-            IntHashMapAdapter hashMapAdapter = new IntHashMapAdapter(sortedMap);
-            provincesListView.setAdapter(hashMapAdapter);
-        }
+        RegionDetailFragment fragment = new RegionDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("name", (String) marker.getTag());
+        fragment.setArguments(bundle);
+        ((MainActivity) requireActivity()).replaceFragment(fragment, true);
     }
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
@@ -237,26 +207,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
-
-    private static Map<String, Integer> sortByComparator(Map<String, Integer> unsortMap, final boolean order) {
-
-        List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortMap.entrySet());
-
-        Collections.sort(list, (o1, o2) -> {
-            if (order) {
-                return o1.getValue().compareTo(o2.getValue());
-            }
-            else {
-                return o2.getValue().compareTo(o1.getValue());
-            }
-        });
-
-        Map<String, Integer> sortedMap = new LinkedHashMap<>();
-        for (Map.Entry<String, Integer> entry : list) {
-            sortedMap.put(entry.getKey(), entry.getValue());
-        }
-
-        return sortedMap;
     }
 }

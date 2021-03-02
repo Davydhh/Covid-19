@@ -94,7 +94,9 @@ public class CovidRepository {
                                 nuoviPositivi,dimessi,deceduti,totaleCasi,tamponi,
                                 totaleNuoviPositivi, ingressiTerapiaIntensiva, casiTestati);
 
-                        nationList.add(nation);
+                        if (!nationList.contains(nation)) {
+                            nationList.add(nation);
+                        }
                         resource.setData(nationList);
                     }
                 } else {
@@ -120,6 +122,91 @@ public class CovidRepository {
         });
     }
 
+    public void getRegionData(String regione,
+                              MutableLiveData<Resource<List<Region>>> regionDataResource) {
+        Call<JsonArray> call = covidService.getRegionData();
+
+        call.enqueue(new Callback<JsonArray>() {
+            final Resource<List<Region>> resource = new Resource<>();
+            @Override
+            public void onResponse(@NotNull Call<JsonArray> call, @NotNull Response<JsonArray> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Region> regionList = new ArrayList<>();
+
+                    JsonArray body = response.body().getAsJsonArray();
+                    for (int i = 0; i < body.size(); i++) {
+                        JsonObject object = body.get(i).getAsJsonObject();
+                        String data = object.get("data").getAsString();
+                        String stato = object.get("stato").getAsString();
+                        int codiceRegionale = object.get("codice_regione").getAsInt();
+                        String nome = object.get("denominazione_regione").getAsString();
+                        String note;
+
+                        try {
+                            note = object.get("note").getAsString();
+                        } catch (UnsupportedOperationException e) {
+                            note = null;
+                        }
+                        double latitude = object.get("lat").getAsDouble();
+                        double longitude = object.get("long").getAsDouble();
+                        int ricoveratiConSintomi = object.get("ricoverati_con_sintomi").getAsInt();
+                        int terapiaIntensiva = object.get("terapia_intensiva").getAsInt();
+                        int totaleOspedalizzati = object.get("totale_ospedalizzati").getAsInt();
+                        int isolamentoDomiciliare = object.get("isolamento_domiciliare").getAsInt();
+                        int attualmentePositivi = object.get("totale_positivi").getAsInt();
+                        int nuoviPositivi = object.get("variazione_totale_positivi").getAsInt();
+                        int dimessi = object.get("dimessi_guariti").getAsInt();
+                        int deceduti = object.get("deceduti").getAsInt();
+                        int totaleCasi = object.get("totale_casi").getAsInt();
+                        int tamponi = object.get("tamponi").getAsInt();
+                        int totaleNuoviPositivi = object.get("nuovi_positivi").getAsInt();
+                        int variazioneTotalePositivi =
+                                object.get("variazione_totale_positivi").getAsInt();
+
+                        int ingressiTerapiaIntensiva;
+
+                        try {
+                            ingressiTerapiaIntensiva =
+                                    object.get("ingressi_terapia_intensiva").getAsInt();
+                        } catch (UnsupportedOperationException e) {
+                            ingressiTerapiaIntensiva = -1;
+                        }
+
+                        Region region = new Region(data, stato, codiceRegionale, nome, latitude,
+                                longitude, ricoveratiConSintomi, terapiaIntensiva, totaleOspedalizzati,
+                                isolamentoDomiciliare, attualmentePositivi, nuoviPositivi, dimessi,
+                                deceduti, totaleCasi, tamponi, note, totaleNuoviPositivi,
+                                variazioneTotalePositivi,  ingressiTerapiaIntensiva);
+
+                        if (nome.equals(regione) && !regionList.contains(region)) {
+                            regionList.add(region);
+                        }
+                        resource.setData(regionList);
+                    }
+                } else {
+                    try {
+                        Log.d(TAG, "onResponse: Errore --> " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    resource.setStatusCode(response.code());
+                    resource.setStatusMessage(response.message());
+                }
+
+                regionDataResource.postValue(resource);
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<JsonArray> call, @NotNull Throwable t) {
+                Log.d(TAG, "onFailure: Errore --> ", t);
+                resource.setStatusMessage(t.getMessage());
+                regionDataResource.postValue(resource);
+            }
+        });
+    }
+
+
+
     public void getLastRegionData(MutableLiveData<Resource<List<Region>>> regionDataResource) {
         Call<JsonArray> call = covidService.getLastRegionData();
 
@@ -137,6 +224,13 @@ public class CovidRepository {
                         String stato = object.get("stato").getAsString();
                         int codiceRegionale = object.get("codice_regione").getAsInt();
                         String nome = object.get("denominazione_regione").getAsString();
+                        String note;
+
+                        try {
+                            note = object.get("note").getAsString();
+                        } catch (UnsupportedOperationException e) {
+                            note = null;
+                        }
                         double latitude = object.get("lat").getAsDouble();
                         double longitude = object.get("long").getAsDouble();
                         int ricoveratiConSintomi = object.get("ricoverati_con_sintomi").getAsInt();
@@ -150,11 +244,16 @@ public class CovidRepository {
                         int totaleCasi = object.get("totale_casi").getAsInt();
                         int tamponi = object.get("tamponi").getAsInt();
                         int totaleNuoviPositivi = object.get("nuovi_positivi").getAsInt();
+                        int variazioneTotalePositivi =
+                                object.get("variazione_totale_positivi").getAsInt();
+                        int ingressiTerapiaIntensiva =
+                                object.get("ingressi_terapia_intensiva").getAsInt();
 
-                        Region region = new Region(data,stato,codiceRegionale,nome,latitude,
-                                longitude,ricoveratiConSintomi,terapiaIntensiva,totaleOspedalizzati,
-                                isolamentoDomiciliare,attualmentePositivi,nuoviPositivi,dimessi,
-                                deceduti,totaleCasi,tamponi,"",totaleNuoviPositivi);
+                        Region region = new Region(data, stato, codiceRegionale, nome, latitude,
+                                longitude, ricoveratiConSintomi, terapiaIntensiva, totaleOspedalizzati,
+                                isolamentoDomiciliare, attualmentePositivi, nuoviPositivi, dimessi,
+                                deceduti, totaleCasi, tamponi, note, totaleNuoviPositivi,
+                                variazioneTotalePositivi,  ingressiTerapiaIntensiva);
 
                         regionList.add(region);
                         resource.setData(regionList);

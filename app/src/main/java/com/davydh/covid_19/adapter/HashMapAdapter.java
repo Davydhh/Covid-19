@@ -81,7 +81,7 @@ public class HashMapAdapter extends BaseAdapter {
             if (value.contains("+")) {
                 int charPosition = value.indexOf('+');
                 str.setSpan(fcsGreen,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            } else {
+            } else if (value.contains("-")) {
                 int charPosition = value.lastIndexOf('-');
                 str.setSpan(fcsRed,charPosition,value.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }

@@ -14,4 +14,7 @@ public interface CovidService {
 
     @GET("dpc-covid19-ita-province-latest.json")
     Call<JsonArray> getLastProvinceData();
+
+    @GET("dpc-covid19-ita-regioni.json")
+    Call<JsonArray> getRegionData();
 }

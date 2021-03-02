@@ -23,7 +23,6 @@ import com.davydh.covid_19.fragment.StatsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-
 public class MainActivity extends AppCompatActivity {
 
     public static final String PREFS_KEY = "Prefs";

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.RegionDetailFragment"
+    android:background="@color/darkBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/stemma_regione"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            tools:src="@drawable/stemma_lombardia"
+            android:contentDescription="stemma regione"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/region_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Lombardia"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            style="@style/TextViewStyleBold"
+            android:textColor="@color/normalText"
+            android:textSize="20sp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/region_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:text="note"
+            android:textColor="@android:color/darker_gray"
+            tools:visibility="visible"
+            android:visibility="gone"/>
+
+        <ListView
+            android:id="@+id/region_info_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:scrollbars="none"
+            android:listSelector="@android:color/transparent"/>
+
+        <Button
+            android:id="@+id/show_cities_data_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dati per provincia"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/colorPrimary"
+            android:padding="16dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/progress_bar_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_background"
+        android:elevation="4dp"
+        android:padding="8dp"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        tools:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"/>
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

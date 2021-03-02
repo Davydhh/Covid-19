@@ -1,5 +1,7 @@
 package com.davydh.covid_19.model;
 
+import java.util.Objects;
+
 public class Region {
     //Covid Data
     private String data;
@@ -20,6 +22,8 @@ public class Region {
     private int tamponi;
     private String note;
     private int totaleNuoviPositivi;
+    private int variazioneTotalePositivi;
+    private int ingressiTerapiaIntensiva;
 
     //Vaccines Data
     private String area;
@@ -27,17 +31,18 @@ public class Region {
     private int dosiConsegnate;
     private double percentualeSomministrazione;
 
-    public Region(String area, int dosiSomministrate, int dosiCOnsegnate, double percentualeSomministrazione) {
+    public Region(String area, int dosiSomministrate, int dosiConsegnate, double percentualeSomministrazione) {
         this.area = area;
         this.dosiSomministrate = dosiSomministrate;
-        this.dosiConsegnate = dosiCOnsegnate;
+        this.dosiConsegnate = dosiConsegnate;
         this.percentualeSomministrazione = percentualeSomministrazione;
     }
 
-    public Region(String data, String stato, int codice, String nome, double latitude, double longitude,
-                  int ricoveratiConSintomi, int terapiaIntensiva, int totaleOspedalizzati,
+    public Region(String data, String stato, int codice, String nome, double latitude,
+                  double longitude, int ricoveratiConSintomi, int terapiaIntensiva, int totaleOspedalizzati,
                   int isolamentoDomiciliare, int attualmentePositivi, int nuoviPositivi, int dimessi,
-                  int deceduti, int totaleCasi, int tamponi, String note, int totaleNuoviPositivi) {
+                  int deceduti, int totaleCasi, int tamponi, String note, int totaleNuoviPositivi,
+                  int variazioneTotalePositivi, int ingressiTerapiaIntensiva) {
         this.data = data;
         this.stato = stato;
         this.codice = codice;
@@ -56,6 +61,8 @@ public class Region {
         this.tamponi = tamponi;
         this.note = note;
         this.totaleNuoviPositivi = totaleNuoviPositivi;
+        this.variazioneTotalePositivi = variazioneTotalePositivi;
+        this.ingressiTerapiaIntensiva = ingressiTerapiaIntensiva;
     }
 
     public String getData() {
@@ -148,6 +155,20 @@ public class Region {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Region region = (Region) o;
+        return codice == region.codice &&
+                data.equals(region.data);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(data, codice);
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.davydh.covid_19.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Objects;
+
 public class Nation implements Parcelable {
     private String data;
     private String stato;
@@ -97,6 +99,19 @@ public class Nation implements Parcelable {
 
     public int getCasiTestati() {
         return casiTestati;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Nation nation = (Nation) o;
+        return data.equals(nation.data);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(data);
     }
 
     @Override
