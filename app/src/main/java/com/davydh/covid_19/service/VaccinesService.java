@@ -9,6 +9,9 @@ public interface VaccinesService {
     @GET("vaccini-summary-latest.json")
     Call<JsonObject> getVacciniSummaryLatest();
 
+    @GET("somministrazioni-vaccini-summary-latest.json")
+    Call<JsonObject> getSomministrazioniSummaryLatest();
+
     @GET("last-update-dataset.json")
     Call<JsonObject> getLastUpdate();
 

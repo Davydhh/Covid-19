@@ -16,12 +16,12 @@ import java.util.List;
 public class RegionViewModel extends ViewModel {
     private static final String TAG = RegionViewModel.class.getSimpleName();
 
-    private MutableLiveData<Resource<List<Region>>> covidRegionData;
     private MutableLiveData<Resource<List<Region>>> lastCovidRegionData;
     private MutableLiveData<Resource<List<Region>>> lastVaccinesRegionData;
+    private MutableLiveData<Resource<Integer>> totalVaccinated;
 
     public LiveData<Resource<List<Region>>> getCovidRegionData(String regione) {
-        covidRegionData = new MutableLiveData<>();
+        MutableLiveData<Resource<List<Region>>> covidRegionData = new MutableLiveData<>();
         Log.d(TAG, "getCovidRegionData: Download the nation data from Internet");
         CovidRepository.getInstance().getRegionData(regione, covidRegionData);
         return covidRegionData;
@@ -45,5 +45,15 @@ public class RegionViewModel extends ViewModel {
         }
 
         return lastVaccinesRegionData;
+    }
+
+    public LiveData<Resource<Integer>> getTotalVaccinated() {
+        if (totalVaccinated == null) {
+            totalVaccinated = new MutableLiveData<>();
+            Log.d(TAG, "getTotalVaccinated: Download the nation data from Internet");
+            VaccinesRepository.getInstance().getVaccinatedData(totalVaccinated);
+        }
+
+        return totalVaccinated;
     }
 }

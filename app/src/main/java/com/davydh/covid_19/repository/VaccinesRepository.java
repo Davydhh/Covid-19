@@ -44,6 +44,47 @@ public class VaccinesRepository {
         return instance;
     }
 
+    public void getVaccinatedData(MutableLiveData<Resource<Integer>> vaccinatedResource) {
+        Call<JsonObject> call = vaccinesService.getSomministrazioniSummaryLatest();
+
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NotNull Call<JsonObject> call, @NotNull Response<JsonObject> response) {
+                Resource<Integer> resource = new Resource<>();
+
+                if (response.isSuccessful() && response.body() != null) {
+                    int vaccinated = 0;
+
+                    JsonArray data = response.body().getAsJsonArray("data");
+                    for (int i = 0; i < data.size(); i++) {
+                        JsonObject object = data.get(i).getAsJsonObject();
+                        vaccinated += object.get("seconda_dose").getAsInt();
+                    }
+
+                    resource.setData(vaccinated);
+                } else if (response.errorBody() != null) {
+                    try {
+                        Log.d(TAG, "onResponse: Errore --> " + response.errorBody().string());
+                        resource.setStatusCode(response.code());
+                        resource.setStatusMessage(response.message());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                vaccinatedResource.setValue(resource);
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
+                Log.d(TAG, "onFailure: Errore --> ", t);
+                Resource<Integer> resource = new Resource<>();
+                resource.setStatusMessage(t.getMessage());
+                vaccinatedResource.setValue(resource);
+            }
+        });
+    }
+
     public void getRegionData(MutableLiveData<Resource<List<Region>>> regionDataResource) {
         Call<JsonObject> call = vaccinesService.getVacciniSummaryLatest();
 
@@ -69,9 +110,8 @@ public class VaccinesRepository {
                     }
 
                     resource.setData(regionList);
-                } else {
+                } else if (response.errorBody() != null) {
                     try {
-                        assert response.errorBody() != null;
                         Log.d(TAG, "onResponse: Errore --> " + response.errorBody().string());
                         resource.setStatusCode(response.code());
                         resource.setStatusMessage(response.message());
@@ -104,9 +144,8 @@ public class VaccinesRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     String date = response.body().get("ultimo_aggiornamento").getAsString();
                     resource.setData(DateTimeUtil.getDataDate(date));
-                } else {
+                } else if (response.errorBody() != null) {
                     try {
-                        assert response.errorBody() != null;
                         Log.d(TAG, "onResponse: Errore --> " + response.errorBody().string());
                         resource.setStatusCode(response.code());
                         resource.setStatusMessage(response.message());
@@ -147,9 +186,8 @@ public class VaccinesRepository {
                     }
 
                     resource.setData(list);
-                } else {
+                } else if (response.errorBody() != null) {
                     try {
-                        assert response.errorBody() != null;
                         Log.d(TAG, "onResponse: Errore --> " + response.errorBody().string());
                         resource.setStatusCode(response.code());
                         resource.setStatusMessage(response.message());

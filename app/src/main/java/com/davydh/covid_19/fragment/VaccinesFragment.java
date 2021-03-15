@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.davydh.covid_19.R;
 import com.davydh.covid_19.databinding.FragmentVaccinesBinding;
 import com.davydh.covid_19.model.Region;
+import com.davydh.covid_19.model.Resource;
 import com.davydh.covid_19.viewmodel.LastUpdateViewModel;
 import com.davydh.covid_19.viewmodel.RegionViewModel;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -149,7 +151,7 @@ public class VaccinesFragment extends Fragment {
                             .build();
                     rows.add(row);
                 }
-                binding.totalVaccinatedTextView.setText(String.format(Locale.ITALIAN, "%,d",
+                binding.totalSomministratedTextView.setText(String.format(Locale.ITALIAN, "%,d",
                         Long.parseLong(String.valueOf(vaccinated))));
                 dataTable.setHeader(header);
 
@@ -172,6 +174,23 @@ public class VaccinesFragment extends Fragment {
                         , BaseTransientBottomBar.LENGTH_LONG).show();
                 Log.d(TAG, "onViewCreated: Errore --> Code: " + listResource.getStatusCode() + " " +
                         "Message: " + listResource.getStatusMessage());
+            }
+        });
+
+        RegionViewModel vaccinatedViewModel = new ViewModelProvider(requireActivity()).get(RegionViewModel.class);
+
+        vaccinatedViewModel.getTotalVaccinated().observe(getViewLifecycleOwner(), integerResource -> {
+            Integer vaccinated = integerResource.getData();
+
+            if (vaccinated != null) {
+                binding.totalVaccinatedTextView.setText(String.format(Locale.ITALIAN, "%,d",
+                        Long.parseLong(String.valueOf(vaccinated))));
+            } else {
+                Snackbar.make(requireView(), "Impossibile scaricare i dati relativi alle " +
+                                "somministrazioni"
+                        , BaseTransientBottomBar.LENGTH_LONG).show();
+                Log.d(TAG, "onViewCreated: Errore --> Code: " + integerResource.getStatusCode() + " " +
+                        "Message: " + integerResource.getStatusMessage());
             }
         });
 
