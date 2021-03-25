@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Andamento nazionale"
         android:textColor="@color/black"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"/>
 
     <com.github.mikephil.charting.charts.LineChart

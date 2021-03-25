@@ -20,10 +20,14 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ContagionsChartFragment extends Fragment {
@@ -53,6 +57,8 @@ public class ContagionsChartFragment extends Fragment {
 
         List<BarEntry> contagionsPercentage = new ArrayList<>();
 
+        final List<String> xAxisLabel = new ArrayList<>();
+
         float count = 0;
         for (int i = 0; i < nationsData.size(); i++) {
             Nation nation = nationsData.get(i);
@@ -64,6 +70,17 @@ public class ContagionsChartFragment extends Fragment {
 
             contagionsPercentage.add(new BarEntry(count,
                     ((float) nation.getTotaleNuoviPositivi() /  varTamponi  * 100)));
+
+            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat format2 = new SimpleDateFormat("dd-MM");
+            Date date = null;
+            try {
+                date = format1.parse(nation.getData());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            xAxisLabel.add(format2.format(date));
+
             count++;
         }
 
@@ -73,11 +90,11 @@ public class ContagionsChartFragment extends Fragment {
 
         BarData contagionPercentageDataSets = new BarData(contagionsPercentageDataSet);
         binding.contagionsPercentageChart.setData(contagionPercentageDataSets);
-        setBarChartStyle(binding.contagionsPercentageChart);
+        setBarChartStyle(binding.contagionsPercentageChart, xAxisLabel);
         binding.contagionsPercentageChart.invalidate();
     }
 
-    private void setBarChartStyle(BarChart chart) {
+    private void setBarChartStyle(BarChart chart, List<String> xLables) {
         chart.setExtraBottomOffset(10f);
 
         YAxis yAxis = chart.getAxisLeft();
@@ -91,9 +108,14 @@ public class ContagionsChartFragment extends Fragment {
         rightAxis.setAxisMinimum(0f);
 
         XAxis xAxis = chart.getXAxis();
-        xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
+        xAxis.setDrawLabels(true);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setLabelCount(xLables.size());
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xLables));
+        xAxis.setLabelCount(10);
+        xAxis.setGranularity(1f);
 
         Legend legend = chart.getLegend();
         legend.setFormSize(10f);

@@ -45,6 +45,18 @@
             tools:visibility="visible"
             android:visibility="gone"/>
 
+        <Button
+            android:id="@+id/show_cities_data_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dati per provincia"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/colorPrimary"
+            android:padding="16dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
         <ListView
             android:id="@+id/region_info_list"
             android:layout_width="match_parent"
@@ -57,18 +69,6 @@
             android:layout_marginBottom="5dp"
             android:scrollbars="none"
             android:listSelector="@android:color/transparent"/>
-
-        <Button
-            android:id="@+id/show_cities_data_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dati per provincia"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/colorPrimary"
-            android:padding="16dp"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            tools:visibility="visible"/>
     </LinearLayout>
 
     <FrameLayout

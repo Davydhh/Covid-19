@@ -98,6 +98,7 @@ public class AnagraficaChartFragment extends Fragment {
         xAxis.setLabelCount(xLables.size());
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(xLables));
+        xAxis.setGranularity(1f);
 
         Legend legend = chart.getLegend();
         legend.setFormSize(10f);

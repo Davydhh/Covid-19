@@ -1,32 +1,10 @@
 
-
-java:S1186<"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(‚›Ìo8û¸Úåñ.
-M
-java:S11280"1Remove this unused import 'java.util.LinkedList'.(»Äğ18½Ÿç”ÿ.
-V
-java:S1128/"4Remove this unused import 'java.util.LinkedHashMap'.(ò†ŠŞùÿÿÿÿ8½Ÿç”ÿ.
-T
-java:S1128,"2Remove this unused import 'java.util.Collections'.(¢³ïÓşÿÿÿÿ8½Ÿç”ÿ.
-P
-java:S1128.".Remove this unused import 'java.util.HashMap'.(™˜”€ùÿÿÿÿ8¤ÖÙ”ÿ.
-N
-java:S1128-"1Remove this unused import 'java.util.Comparator'.(î¹ó¹8¤ÖÙ”ÿ.
-N
-java:S1068:"1Remove this unused "provincesData" private field.(âÅ¥Î8§Şä”ÿ.
-W
-java:S10689"5Remove this unused "provincesListView" private field.(ÕÇ¶°øÿÿÿÿ8æ–î”ÿ.
 X
-java:S2209È"5Change this instance-reference to a static reference.(•¾· şÿÿÿÿ8˜ŸûÜò.
-h
-java:S1128"LRemove this unused import 'com.davydh.covid_19.viewmodel.ProvinceViewModel'.(¯úª8ÁÏå”ÿ.
+java:S2209¯"5Change this instance-reference to a static reference.(•¾· şÿÿÿÿ8ÃÄ††/
+Y	java:S125Š"<This block of commented-out lines of code should be removed.(şóß…8û¸Úåñ.
 W
-java:S1128"5Remove this unused import 'android.view.MotionEvent'.(˜šËŞúÿÿÿÿ8æ–î”ÿ.
-L
-java:S11282"*Remove this unused import 'java.util.Map'.(¼è½Òşÿÿÿÿ8½Ÿç”ÿ.
-z
-java:S1128("XRemove this unused import 'com.google.android.material.bottomsheet.BottomSheetBehavior'.(Æ€¬Ğşÿÿÿÿ8Ë¶Ù”ÿ.
-^
-java:S1128"<Remove this unused import 'android.annotation.SuppressLint'.(ÕƒóÏûÿÿÿÿ8æ–î”ÿ.
-Y	java:S125•"<This block of commented-out lines of code should be removed.(şóß…8û¸Úåñ.
-g
-java:S1128"JRemove this unused import 'com.davydh.covid_19.adapter.IntHashMapAdapter'.(ÚİŞİ8¤ÖÙ”ÿ.
+java:S1068."5Remove this unused "provincesListView" private field.(ÕÇ¶°øÿÿÿÿ8æ–î”ÿ.
+N
+java:S1068/"1Remove this unused "provincesData" private field.(âÅ¥Î8§Şä”ÿ.
+
+java:S11861"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(‚›Ìo8û¸Úåñ.

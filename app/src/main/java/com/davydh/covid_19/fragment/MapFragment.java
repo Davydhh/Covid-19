@@ -1,6 +1,5 @@
 package com.davydh.covid_19.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -9,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -22,10 +20,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.davydh.covid_19.R;
 import com.davydh.covid_19.activity.MainActivity;
-import com.davydh.covid_19.adapter.IntHashMapAdapter;
 import com.davydh.covid_19.model.Province;
 import com.davydh.covid_19.model.Region;
-import com.davydh.covid_19.viewmodel.ProvinceViewModel;
 import com.davydh.covid_19.viewmodel.RegionViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,17 +33,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
@@ -159,34 +148,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             int codiceRegione = region.getCodice();
 
             switch (codiceRegione) {
-                case 3:
-                case 1:
                 case 13:
-                case 15:
-                case 8:
-                case 11:
                 case 9:
                 case 21:
-                case 22:
                 case 10:
-                    marker.setIcon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_coronavirus_orange));
-                    break;
-                case 17:
-                case 14:
-                    marker.setIcon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_coronavirus_red));
-                    break;
                 case 18:
-                case 6:
-                case 12:
                 case 7:
-                case 16:
                 case 19:
                 case 2:
-                case 5:
-                    marker.setIcon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_coronavirus_yellow));
+                case 20:
+                case 17:
+                    marker.setIcon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_coronavirus_orange));
                     break;
                 default:
-                    marker.setIcon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_coronavirus_white));
+                    marker.setIcon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_coronavirus_red));
             }
         }
     }

@@ -2,24 +2,22 @@ package com.davydh.covid_19.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.davydh.covid_19.R;
 import com.davydh.covid_19.databinding.FragmentNewPositivesChartBinding;
-import com.davydh.covid_19.model.Nation;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -60,7 +58,9 @@ public class NewPositivesChartFragment extends Fragment {
 
         LineDataSet newTotalInfectedDataSet = new LineDataSet(totalNewPositiveEntries, "Totale nuovi casi positivi");
         newTotalInfectedDataSet.setDrawCircles(false);
+        newTotalInfectedDataSet.setDrawFilled(true);
         newTotalInfectedDataSet.setColor(Color.BLUE);
+        newTotalInfectedDataSet.setFillColor(Color.BLUE);
 
         LineData positiveDataSets = new LineData(newTotalInfectedDataSet);
         binding.newRecoveredChart.setData(positiveDataSets);

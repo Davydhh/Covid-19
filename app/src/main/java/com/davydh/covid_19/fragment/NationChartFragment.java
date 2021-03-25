@@ -20,11 +20,15 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class NationChartFragment extends Fragment {
@@ -58,12 +62,23 @@ public class NationChartFragment extends Fragment {
         List<Entry> recoveredEntries = new ArrayList<>();
         List<Entry> deadEntries = new ArrayList<>();
 
+        final List<String> xAxisLabel = new ArrayList<>();
+
         float count = 0;
         for (int i = 0; i < nationsData.size(); i++) {
             Nation nation = nationsData.get(i);
             infectedEntries.add(new Entry(count,(float) nation.getAttualmentePositivi()));
             recoveredEntries.add(new Entry(count,(float) nation.getDimessi()));
             deadEntries.add(new Entry(count,(float) nation.getDeceduti()));
+            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat format2 = new SimpleDateFormat("dd-MM");
+            Date date = null;
+            try {
+                date = format1.parse(nation.getData());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            xAxisLabel.add(format2.format(date));
             count++;
         }
 
@@ -85,11 +100,11 @@ public class NationChartFragment extends Fragment {
 
         LineData nationData = new LineData(nationDataSets);
         binding.nationChart.setData(nationData);
-        setLineChartStyle(binding.nationChart);
+        setLineChartStyle(binding.nationChart, xAxisLabel);
         binding.nationChart.invalidate();
     }
 
-    private void setLineChartStyle(LineChart chart) {
+    private void setLineChartStyle(LineChart chart, List<String> xLables) {
         chart.setExtraBottomOffset(10f);
 
         YAxis yAxis = chart.getAxisLeft();
@@ -101,9 +116,13 @@ public class NationChartFragment extends Fragment {
         leftYAxis.setDrawAxisLine(false);
 
         XAxis xAxis = chart.getXAxis();
-        xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
+        xAxis.setDrawLabels(true);
+        xAxis.setDrawAxisLine(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xLables));
+        xAxis.setLabelCount(10);
+        xAxis.setGranularity(1f);
 
         Legend legend = chart.getLegend();
         legend.setFormSize(10f);

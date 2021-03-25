@@ -64,6 +64,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Somministrazioni"
+                        android:textSize="10sp"
                         android:layout_gravity="center_horizontal"
                         style="@style/TextViewStyleBold"
                         android:textColor="@color/vaccini"/>
@@ -109,6 +110,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Vaccinati"
+                        android:textSize="10sp"
                         android:layout_gravity="center_horizontal"
                         style="@style/TextViewStyleBold"
                         android:textColor="@color/vaccini"/>
